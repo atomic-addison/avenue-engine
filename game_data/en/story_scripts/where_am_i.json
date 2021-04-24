@@ -1,0 +1,26 @@
+[
+    {
+       "character":"sh",
+       "emote": "default",
+       "speak":"Oh...",
+       "scene":"blank_white"
+    },
+    {
+       "character":"sh",
+       "emote": "happy",
+       "speak":"You're here, with me!",
+       "scene":"blank_white"
+    },
+    {
+       "character":"sh",
+       "speak":"...",
+       "emote":"happy",
+       "scene":"blank_white",
+       "choices":[
+          {
+             "option":"Who are you?",
+             "next": "who_are_you"
+          }
+       ]
+    }
+]

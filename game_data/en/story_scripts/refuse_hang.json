@@ -1,0 +1,46 @@
+[
+
+    {
+        "character":"av",
+        "emote":"phone_sweating",
+        "speak":"Oh uh... I-I can't I got- I gotta go and uh yeah...",
+        "scene":"street_split",
+        "guest":{
+          "order":1,
+          "character":"nv",
+          "emote":"phone_puzzled"
+        }
+    },
+    {
+        "character":"nv",
+        "emote":"phone_speaking",
+        "speak":"Thats alright! Take care!",
+        "scene":"street_split",
+        "guest":{
+          "order":0,
+          "character":"av",
+          "emote":"phone_sweating_idle"
+        }
+    },
+    {
+        "character":"av",
+        "speak":"*beep*",
+        "name_override":"Phone",
+        "scene":"street_closed",
+        "emote":"dial_sweating"
+    },
+    {
+        "character":"av",
+        "speak":"phew...",
+        "name_override":"Phone",
+        "scene":"street_closed",
+        "emote":"exhale_phone"
+    },
+    {
+        "character":"av",
+        "speak":"...",
+        "name_override":"Phone",
+        "scene":"street_closed",
+        "emote":"phone_pocket"
+    }
+]

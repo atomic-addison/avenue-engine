@@ -1,0 +1,67 @@
+[    
+   {
+      "character":"sh",
+      "speak":"...",
+      "scene":"blank_white"
+   },
+   {
+      "character":"sh",
+      "emote":"default",
+      "speak":"...",
+      "scene":"blank_white"
+   },
+   {
+      "character":"sh",
+      "speak":"What are you doing?",
+      "emote":"default",
+      "scene":"blank_white"
+   },
+   {
+      "character":"sh",
+      "speak":"...",
+      "emote":"default",
+      "scene":"blank_white",
+      "choices":[
+         {
+            "option":"..."
+         },
+         {
+            "option":"..."
+         }
+      ]
+   },
+   {
+      "character":"sh",
+      "speak":"A silent type?",
+      "emote":"puzzled",
+      "scene":"blank_white"
+   },
+   {
+      "character":"sh",
+      "speak":"...",
+      "emote":"default",
+      "scene":"blank_white"
+   },
+   {
+      "character":"sh",
+      "speak":"Are you scared?",
+      "emote":"blank",
+      "scene":"blank_white"
+   },
+   {
+      "character":"sh",
+      "speak":"...",
+      "emote":"blank",
+      "scene":"blank_white",
+      "choices":[
+         {
+            "option":"Where am I?",
+            "next": "where_am_i"
+         },
+         {
+            "option":"Who are you?",
+            "next": "who_are_you"
+         }
+      ]
+   }
+]

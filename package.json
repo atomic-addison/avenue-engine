@@ -1,0 +1,21 @@
+{
+  "name": "public-kittens-slip-hfque",
+  "productName": "public-kittens-slip-hfque",
+  "description": "My Electron application description",
+  "keywords": [],
+  "main": "./main.js",
+  "version": "1.0.0",
+  "author": "sly",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "html2canvas": "^1.0.0-rc.5",
+    "jquery": "^3.5.1",
+    "open": "^7.0.4"
+  },
+  "devDependencies": {
+    "electron": "9.0.2",
+    "electron-builder": "^22.7.0"
+  }
+}

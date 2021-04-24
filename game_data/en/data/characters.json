@@ -1,0 +1,24 @@
+[
+    {
+		"pseudonym": "p"
+	},
+    {
+		"pseudonym": "pa",
+		"name": "Phone alarm"
+	},
+    {
+		"pseudonym": "sh",
+		"dirname": "shadow",
+		"name": "???"
+	},
+    {
+		"pseudonym": "av",
+		"dirname": "avery",
+		"name": "Avery"
+	},
+    {
+		"pseudonym": "nv",
+		"dirname": "nav",
+		"name": "Nav"
+	}
+]

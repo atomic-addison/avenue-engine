@@ -1,0 +1,129 @@
+[
+
+    {
+        "character":"av",
+        "emote":"phone_sweating",
+        "speak":"Oh uh... Okay, sure.",
+        "scene":"street_split",
+        "guest":{
+          "order":1,
+          "character":"nv",
+          "emote":"phone_idle"
+        }
+    },
+    {
+        "character":"nv",
+        "emote":"phone_happy_speak",
+        "speak":"Awesome! Hang around the store for a little bit, I'll be there soon!",
+        "scene":"street_split",
+        "guest":{
+          "order":0,
+          "character":"av",
+          "emote":"phone_sweating_idle"
+        }
+    },
+    {
+        "character":"av",
+        "speak":"*beep*",
+        "name_override":"Phone",
+        "scene":"street_closed",
+        "emote":"dial_sweating"
+    },
+    {
+        "character":"av",
+        "speak":"phew...",
+        "scene":"street_closed",
+        "emote":"exhale_phone"
+    },
+    {
+        "character":"av",
+        "speak":"...",
+        "scene":"street_closed",
+        "emote":"phone_pocket"
+    },
+    {
+        "character":"av",
+        "speak":"Man, she probably thinks I'm a total dolt now...",
+        "scene":"street_closed",
+        "emote":"anxious"
+    },
+    {
+        "character":"av",
+        "speak":"What do I even do now, its not like its not gonna be awkward.",
+        "scene":"street_closed",
+        "emote":"anxious"
+    },
+    {
+        "character":"av",
+        "speak":"...",
+        "scene":"street_closed",
+        "emote":"neutral"
+    },
+    {
+        "character":"av",
+        "speak":"That cat meme I saw yesterday was pretty funny tho...",
+        "scene":"street_closed",
+        "emote":"smirk"
+    },
+    {
+        "character":"av",
+        "speak":"...",
+        "scene":"street_closed",
+        "emote":"thinking"
+    },
+    {
+        "character":"av",
+        "speak":"Wonder what that dream was all about...",
+        "scene":"street_closed",
+        "emote":"thinking"
+    },
+    {
+       "affected":true,
+       "sysvarCheck":"friends",
+       "sysvarResults":{
+            "yes":{
+                "character":"av",
+                "speak":"What an interesting fellow.",
+                "scene":"street_closed",
+                "emote":"thinking"
+            },
+            "no":{
+                "character":"av",
+                "speak":"What a creepy weirdo.",
+                "scene":"street_closed",
+                "emote":"thinking"
+            }
+       }
+    },
+    {
+        "character":"av",
+        "speak":"That ghost guy...",
+        "scene":"street_closed",
+        "emote":"thinking"
+    },
+    {
+        "character":"av",
+        "speak":"EEEEEEK!!!",
+        "scene":"blank_black"
+    },
+    {
+        "character":"nv",
+        "speak":"Guess who?",
+        "scene":"street_hidden"
+    },
+    {
+        "character":"av",
+        "speak":"Aw come on Nav, you scared the crap out of me!",
+        "scene":"street_hidden"
+    },
+    {
+        "character":"nv",
+        "speak":"Aww, really? You're such a scaredy-cat, you!",
+        "scene":"street_hidden"
+    },
+    {
+        "character":"av",
+        "speak":"Let me go, Nav, I'm already half-blind as is.",
+        "scene":"street_hidden"
+    }
+]

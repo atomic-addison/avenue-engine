@@ -1,0 +1,23 @@
+[
+    {
+        "character":"av",
+        "speak":"*beep*",
+        "name_override":"Phone",
+        "scene":"street_closed",
+        "emote":"dial_tense"
+    },
+    {
+        "character":"av",
+        "speak":"phew...",
+        "name_override":"Phone",
+        "scene":"street_closed",
+        "emote":"exhale_phone"
+    },
+    {
+        "character":"av",
+        "speak":"...",
+        "name_override":"Phone",
+        "scene":"street_closed",
+        "emote":"phone_pocket"
+    }
+]

@@ -1,0 +1,296 @@
+[
+    {
+       "character":"sh",
+       "emote" : "conflicted",
+       "speak":"Uh...",
+       "scene":"blank_white"
+    },
+    {
+       "character":"sh",
+       "emote" : "default",
+       "speak":"I don't know.",
+       "scene":"blank_white"
+    },
+    {
+       "character":"sh",
+       "emote" : "default",
+       "speak":"...",
+       "scene":"blank_white"
+    },
+    {
+       "character":"sh",
+       "emote" : "default",
+       "speak":"...",
+       "scene":"blank_white"
+    },
+    {
+       "character":"sh",
+       "speak":"...",
+       "emote":"default",
+       "scene":"blank_white",
+       "choices":[
+          {
+             "option":"Why am I here?",
+             "sysvar":[
+                {
+                   "name":"whyhere",
+                   "value":"why"
+                }
+             ]
+          },
+          {
+             "option":"My head hurts...",
+             "sysvar":[
+                {
+                   "name":"whyhere",
+                   "value":"hurts"
+                }
+             ]
+          }
+       ]
+    },
+    {
+       "affected":true,
+       "sysvarCheck":"whyhere",
+       "sysvarResults":{
+          "why":{
+             "speak":"You look funny.",
+             "emote" : "speak",
+             "character":"sh",
+             "scene":"blank_white"
+          },
+          "hurts":{
+             "speak":"Your eyes...",
+             "character":"sh",
+             "emote":"speak",
+             "scene":"blank_white"
+          }
+       }
+    },
+    {
+       "affected":true,
+       "sysvarCheck":"whyhere",
+       "sysvarResults":{
+          "hurts":{
+             "speak":"...",
+             "emote" : "default",
+             "character":"sh",
+             "scene":"blank_white",
+             "choices":[
+                {
+                   "option":"Eyes?"
+                }
+             ]
+          },
+          "why":{
+             "speak":"...",
+             "character":"sh",
+             "emote":"default",
+             "scene":"blank_white",
+             "choices":[
+                {
+                   "option":"Funny?"
+                }
+             ]
+          }
+       }
+    },
+    {
+       "affected":true,
+       "sysvarCheck":"whyhere",
+       "sysvarResults":{
+          "why":{
+             "speak":"...",
+             "emote" : "conflicted",
+             "character":"sh",
+             "scene":"blank_white"
+          },
+          "hurts":{
+             "speak":"They're all...",
+             "character":"sh",
+             "emote":"speak",
+             "scene":"blank_white"
+          }
+       }
+    },
+    {
+       "affected":true,
+       "sysvarCheck":"whyhere",
+       "sysvarResults":{
+          "why":{
+             "speak":"Sorry.",
+             "emote" : "speak",
+             "character":"sh",
+             "scene":"blank_white"
+          },
+          "hurts":{
+             "speak":"...",
+             "character":"sh",
+             "emote":"default",
+             "scene":"blank_white"
+          }
+       }
+    },
+    {
+       "affected":true,
+       "sysvarCheck":"whyhere",
+       "sysvarResults":{
+          "why":{
+             "speak":"...",
+             "emote" : "default",
+             "character":"sh",
+             "scene":"blank_white"
+          },
+          "hurts":{
+             "speak":"Spinny...",
+             "character":"sh",
+             "emote":"conflicted",
+             "scene":"blank_white"
+          }
+       }
+    },
+    {
+       "affected":true,
+       "sysvarCheck":"whyhere",
+       "sysvarResults":{
+          "why":{
+             "speak":"...",
+             "emote" : "default",
+             "character":"sh",
+             "scene":"blank_white"
+          },
+          "hurts":{
+             "speak":"...",
+             "character":"sh",
+             "emote":"default",
+             "scene":"blank_white"
+          }
+       }
+    },
+    {
+       "character":"sh",
+       "speak":"...",
+       "emote":"default",
+       "scene":"blank_white",
+       "choices":[
+          {
+             "option":"I feel like I'm dead..."
+          }
+       ]
+    },
+    {
+       "character":"sh",
+       "speak":"...",
+       "emote":"conflicted",
+       "scene":"blank_white"
+    },
+    {
+       "character":"sh",
+       "emote" : "speak",
+       "speak":"Maybe, maybe not...",
+       "scene":"blank_white"
+    },
+    {
+       "character":"sh",
+       "emote" : "default",
+       "speak":"...",
+       "scene":"blank_white"
+    },
+    {
+       "character":"sh",
+       "speak":"...",
+       "emote":"default",
+       "scene":"blank_white",
+       "choices":[
+          {
+             "option":"What now?"
+          }
+       ]
+    },
+    {
+       "character":"sh",
+       "speak":"...",
+       "emote":"conflicted",
+       "scene":"blank_white"
+    },
+    {
+       "character":"sh",
+       "speak":"We can be friends!",
+       "emote":"happy",
+       "scene":"blank_white"
+    },
+    {
+       "character":"sh",
+       "speak":"Wanna be my friend?",
+       "emote":"catface",
+       "scene":"blank_white"
+    },
+    {
+       "character":"sh",
+       "speak":"...",
+       "emote":"catface",
+       "scene":"blank_white",
+       "choices":[
+          {
+             "option":"Sure.",
+             "sysvar":[
+                {
+                   "name":"friends",
+                   "value":"yes"
+                }
+             ]
+          },
+          {
+             "option":"Nah.",
+             "sysvar":[
+                {
+                   "name":"friends",
+                   "value":"no"
+                }
+             ]
+          }
+       ]
+    },
+    {
+       "affected":true,
+       "sysvarCheck":"friends",
+       "sysvarResults":{
+          "yes":{
+             "speak":"Whoa! You're my first friend!",
+             "emote" : "happy",
+             "character":"sh",
+             "scene":"blank_white"
+          },
+          "no":{
+             "speak":"oh.",
+             "character":"sh",
+             "emote":"speak",
+             "scene":"blank_white"
+          }
+       }
+    },
+    {
+       "affected":true,
+       "sysvarCheck":"friends",
+       "sysvarResults":{
+          "yes":{
+             "speak":"Please, remember me when you wake up.",
+             "emote" : "speakhappy",
+             "character":"sh",
+             "scene":"blank_white"
+          },
+          "no":{
+             "speak":"...",
+             "character":"sh",
+             "emote":"sadmouth",
+             "scene":"blank_white"
+          }
+       }
+    },
+    {
+       "character":"p",
+       "speak":"Wake up!",
+       "scene":"blank_black",
+       "next": "wake_up"
+    }
+]

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>project</title>
+    <link rel="stylesheet" type="text/css" href="./style.css">
+	<script>window.$ = window.jQuery = require('jquery');</script>
+    <script>
+      require('./head.js')
+    </script>
+  </head>
+  <body>
+    <div class="game_intro" data-duration="2000">
+      <div class="sb-specifics">
+        <div class="intro_content">
+          <div class="intro_random">
+            <span class="nbr ltr">0</span>
+            <span class="nbr ltr">0</span>
+            <span class="nbr ltr">0</span>
+            <span class="nbr ltr">0</span>
+            <span class="nbr ltr">0</span>
+            <span class="nbr ltr">0</span>
+            <span class="nbr ltr">0</span>
+            <span class="nbr ltr">0</span>
+            <span class="nbr ltr">0</span>
+            <span class="nbr ltr">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  	<div class="first_time_locale ignore">
+  		<div class="lang_selector">
+  			<div class="inner_menu_title">Select your language</div>
+  			<div class="lang_inner"></div>
+  		</div>
+  	</div>
+    <div class="page confirm_page ignore">
+      <button class="toggle_page"><img src="./assets/img/close.png"></button>
+      <div class="confirm_page_inner">
+        <div class="confirm_prompt"></div>
+        <div class="confirm_choices"></div>
+      </div>
+    </div>
+    <div class="page about_page ignore">
+      <button class="toggle_page"><img src="./assets/img/close.png"></button>
+      <div class="about_page_inner">
+        Hiya! Thanks for playing the game!<br>
+        Made by <a href="https://source.dog">me</a>!<br><br>
+        Technologies used:
+        <ul>
+          <li><a href="https://jquery.com/">jQuery</a> (sorry, not sorry)</li>
+          <li><a href="https://www.electronjs.org/">Electron</a></li>
+          <li><a href="https://nodejs.org/en/">Node.js</a></li>
+          <li><a href="https://html2canvas.hertzen.com/">html2canvas</a></li>
+          <li><a href="https://github.com/pwnall/node-open">node-open</a></li>
+        </ul>
+        All the drawings were made in Adobe Photoshop CC 2019.
+      </div>
+    </div>
+  	<div class="pause_menu ignore">
+  		<button class="toggle_pause"><img src="./assets/img/close.png"></button>
+  		<div class="pause_menu_menu">
+        <button class="main_restart" data-dict="restart"></button>
+  			<button class="open_page" data-page="save_menu" data-dict="save"></button>
+  			<button class="open_page" data-page="load_menu" data-dict="load"></button>
+  			<button class="open_page" data-page="settings_menu" data-dict="settings"></button>
+        <button class="open_page" data-page="about_page" data-dict="about"></button>
+  			<button class="main_quit" data-dict="quit"></button>
+  		</div>
+  	</div>
+  	<div class="main_menu ignore">
+  		<div class="main_menu_menu">
+  			<button class="main_play" data-dict="play"></button>
+  			<button class="open_page" data-page="load_menu" data-dict="load"></button>
+  			<button class="open_page" data-page="settings_menu" data-dict="settings"></button>
+        <button class="open_page" data-page="about_page" data-dict="about"></button>
+  			<button class="main_quit" data-dict="quit"></button>
+  		</div>
+  	</div>
+  	<div class="page load_menu ignore">
+  		<button class="toggle_page"><img src="./assets/img/close.png"></button>
+  		<div class="inner_menu_menu">
+  			<div class="inner_menu_title" data-dict="load_game"></div>
+  			<div class="imm_inner">
+  				<div class="i_slot lmm_slot_1"></div>
+  				<div class="i_slot lmm_slot_2"></div>
+  				<div class="i_slot lmm_slot_3"></div>
+  				<div class="i_slot lmm_slot_4"></div>
+  				<div class="i_slot lmm_slot_5"></div>
+  				<div class="i_slot lmm_slot_6"></div>
+  			</div>
+  		</div>
+  	</div>
+  	<div class="page save_menu ignore">
+  		<button class="toggle_page"><img src="./assets/img/close.png"></button>
+  		<div class="inner_menu_menu">
+  			<div class="inner_menu_title" data-dict="save_game"></div>
+  			<div class="imm_inner">
+  				<div class="i_slot smm_slot_1"></div>
+  				<div class="i_slot smm_slot_2"></div>
+  				<div class="i_slot smm_slot_3"></div>
+  				<div class="i_slot smm_slot_4"></div>
+  				<div class="i_slot smm_slot_5"></div>
+  				<div class="i_slot smm_slot_6"></div>
+  			</div>
+  		</div>
+  	</div>
+  	<div class="page settings_menu ignore">
+		<button class="toggle_page"><img src="./assets/img/close.png"></button>
+		<div class="settings_menu_inner">
+			<div class="settings_locale">
+				<div class="settings_locale_title" data-dict="locale"></div>
+				<div class="locale_buttons"></div>
+			</div>
+      <div class="settings_split">
+        <div class="settings_split_title" data-dict="next_dialogue"></div>
+        <div class="settings_keypress">
+          <button id="pick_key"></button>
+        </div>
+      </div>
+			<div class="settings_save_container">
+				<button class="settings_save" data-dict="save_settings"></button>
+			</div>
+		</div>
+	</div>
+  	<div class="game_contents">
+  		<button class="toggle_pause"><img src="./assets/img/bars.png"></button>
+	  	<div class="event_manager"></div>
+	  	<div class="character"></div>
+	  	<div class="background"></div>
+	  	<div class="choice_area inactive"></div>
+	  	<div class="speech_box">
+		  	<div class="name"></div>
+		  	<div class="speech"></div>
+	  	</div>
+  	</div>
+
+    <script>
+      require('./renderer.js')
+    </script>
+  </body>
+</html>

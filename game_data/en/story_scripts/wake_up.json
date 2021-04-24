@@ -1,0 +1,258 @@
+[
+    {
+       "character":"pa",
+       "speak":"Grab a brush and put a little make up!",
+       "scene":"phone_ring"
+    },
+    {
+       "character":"pa",
+       "speak":"Hide the scars to fade away the shakeup!",
+       "scene":"phone_ring"
+    },
+    {
+       "character":"p",
+       "speak":"Ok that's enough, Serj, thanks.",
+       "scene":"phone_hand"
+    },
+    {
+       "character":"p",
+       "speak":"Phew.",
+       "scene":"phone_alarm"
+    },
+    {
+       "character":"p",
+       "speak":"What a weird dream...",
+       "scene":"phone_alarm"
+    },
+    {
+       "character":"p",
+       "speak":"...",
+       "scene":"phone_alarm"
+    },
+    {
+       "character":"p",
+       "speak":"Well, time to get up.",
+       "scene":"phone_alarm"
+    },
+    {
+       "character":"p",
+       "scene":"blank_black"
+    },
+    {
+        "character":"p",
+        "speak":"...",
+        "scene":"bathroom_player_blurry"
+    },
+    {
+        "character":"p",
+        "speak":"Where did my glasses go?...",
+        "scene":"bathroom_player_blurry"
+    },
+    {
+        "character":"p",
+        "speak":"Guh.",
+        "scene":"bathroom_player_clear"
+    },
+    {
+        "character":"p",
+        "speak":"Stunning as always, Ave.",
+        "scene":"bathroom_player_frown"
+    },
+    {
+        "character":"p",
+        "speak":"Heh...",
+        "scene":"bathroom_player_smirk"
+    },
+    {
+       "affected":true,
+       "sysvarCheck":"whyhere",
+       "sysvarResults":{
+          "why":{
+             "speak":"I look funny? Sad maybe, not really funny.",
+             "character":"p",
+             "scene":"bathroom_player_smirk"
+          },
+          "hurts":{
+             "speak":"Eyes? Whats wrong with my eyes?",
+             "character":"p",
+             "scene":"bathroom_player_smirk"
+          }
+       }
+    },
+    {
+        "character":"p",
+        "speak":"...",
+        "scene":"bathroom_player_clear"
+    },
+    {
+        "character":"p",
+        "speak":"Crap, I zoned out.",
+        "scene":"bathroom_player_frown"
+    },
+    {
+        "character":"p",
+        "speak":"Gotta get this morning routine done with before I die of boredom and become trapped in this mirror as a sad hairy ghost.",
+        "scene":"bathroom_player_smirk"
+    },
+    {
+       "character":"p",
+       "scene":"blank_black"
+    },
+    {
+        "character":"p",
+        "speak":"Thats definitely better.",
+        "scene":"bathroom_player_tidy"
+    },
+    {
+        "character":"p",
+        "speak":"At least now I'll be the most presentable hobo in this part of town.",
+        "scene":"bathroom_player_tidy"
+    },
+    {
+        "character":"p",
+        "speak":"Well, better head out now if I wanna make it to work on time.",
+        "scene":"bathroom_player_tidy"
+    },
+    {
+        "character":"p",
+        "scene":"blank_white"
+    },
+    {
+        "character":"p",
+        "speak":"Phew, I made it.",
+        "scene":"street_closed"
+    },
+    {
+        "character":"p",
+        "speak":"W-wait a second...",
+        "scene":"street_closed"
+    },
+    {
+        "character":"p",
+        "speak":"Aw, god damnit.",
+        "scene":"closed_sign"
+    },
+    {
+        "character":"av",
+        "speak":"Ugh, I better call Nav before I get fired on my first day.",
+        "emote":"dial",
+        "scene":"street_closed",
+        "hideName":true
+    },
+    {
+        "character":"av",
+        "speak":"Come on, pick up...",
+        "emote":"calling",
+        "scene":"street_closed",
+        "hideName":true
+    },
+    {
+        "character":"nv",
+        "emote":"phone_speaking",
+        "speak":"Hey hey!",
+        "scene":"street_split",
+        "guest":{
+          "order":0,
+          "character":"av",
+          "emote":"calling"
+        }
+    },
+    {
+        "character":"av",
+        "emote":"phone_unsure",
+        "speak":"uh.. um... h- h- uuh...",
+        "scene":"street_split",
+        "guest":{
+          "order":1,
+          "character":"nv",
+          "emote":"phone_idle"
+        }
+    },
+    {
+        "character":"av",
+        "emote":"phone_sweating",
+        "speak":"uh..uh..uh.. um.. I- uh..",
+        "scene":"street_split",
+        "guest":{
+          "order":1,
+          "character":"nv",
+          "emote":"phone_puzzled"
+        }
+    },
+    {
+        "character":"nv",
+        "emote":"phone_puzzled_speaking",
+        "speak":"Ave? Whats up?",
+        "scene":"street_split",
+        "guest":{
+          "order":0,
+          "character":"av",
+          "emote":"phone_cover_mouth"
+        }
+    },
+    {
+        "character":"av",
+        "emote":"calling_tense_speak",
+        "speak":"uh..Yes!",
+        "scene":"street_split",
+        "guest":{
+          "order":1,
+          "character":"nv",
+          "emote":"phone_idle"
+        }
+    },
+    {
+        "character":"av",
+        "emote":"calling_tense",
+        "speak":"...",
+        "scene":"street_split",
+        "guest":{
+          "order":1,
+          "character":"nv",
+          "emote":"phone_idle"
+        }
+    },
+    {
+        "character":"av",
+        "emote":"calling_tense",
+        "speak":"...",
+        "scene":"street_split",
+        "guest":{
+          "order":1,
+          "character":"nv",
+          "emote":"phone_puzzled"
+        }
+    },
+    {
+        "character":"nv",
+        "emote":"phone_puzzled_speaking",
+        "speak":"Avery?",
+        "scene":"street_split",
+        "guest":{
+          "order":0,
+          "character":"av",
+          "emote":"calling_super_tense"
+        }
+    },
+    {
+        "character":"av",
+        "emote":"calling_super_tense",
+        "speak":"...",
+        "scene":"street_split",
+        "guest":{
+          "order":1,
+          "character":"nv",
+          "emote":"phone_puzzled"
+        },
+        "choices":[
+           {
+              "option":"Apologize",
+              "next": "apologize"
+           },
+           {
+              "option":"Hang up",
+              "next": "hang_up"
+           }
+        ]
+    }
+]
