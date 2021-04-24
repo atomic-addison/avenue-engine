@@ -479,7 +479,7 @@ $(document).on("langload", function(){
 		e.stopPropagation();
 
 		new customPrompt({
-			text: window.lang_dict.overwrite_confirm,
+			text: window.lang_dict.quit_confirm,
 			options: [
 				{
 					"text" : window.lang_dict.sure,
