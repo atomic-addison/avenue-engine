@@ -10,7 +10,8 @@
     "start": "electron ."
   },
   "dependencies": {
-    "html2canvas": "^1.0.0-rc.5",
+    "glob": "^7.1.6",
+    "html2canvas": "^1.0.0-rc.7",
     "jquery": "^3.5.1",
     "open": "^7.0.4"
   },

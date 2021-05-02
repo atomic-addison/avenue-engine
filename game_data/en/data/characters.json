@@ -20,5 +20,10 @@
 		"pseudonym": "nv",
 		"dirname": "nav",
 		"name": "Nav"
+	},
+    {
+		"pseudonym": "ns",
+		"dirname": "nav_shadow",
+		"name": "Nav"
 	}
 ]

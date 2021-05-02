@@ -1,25 +1,37 @@
-// Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow} = require('electron');
+const fs = require('fs');
+const path = require('path');
+
+var identity;
 
 function createWindow () {
-  // Create the browser window.
-  const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      nodeIntegration: true,
-      enableRemoteModule: true
-    }
-  })
+  var mainWindow;
 
-  // and load the index.html of the app.
-  mainWindow.loadFile('index.html')
+  fs.readFile(path.join(__dirname, 'identity.json'), (err, data) => {
+    if (err) throw err;
 
-  mainWindow.setMenu(null)
+    //LOAD ENGINE DEFAULTS
+    identity = JSON.parse(data);
 
+    // Create the browser window.
+    mainWindow = new BrowserWindow({
+      width: 800,
+      height: 600,
+      webPreferences: {
+        nodeIntegration: true,
+        enableRemoteModule: true
+      }
+    });
+  
+    // and load the index.html of the app.
+    mainWindow.loadFile('index.html');
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+    mainWindow.setMenu(null);
+
+    // Open the DevTools.
+    if (identity.developer_tools_init) mainWindow.webContents.openDevTools();
+
+  });
 }
 
 // This method will be called when Electron has finished

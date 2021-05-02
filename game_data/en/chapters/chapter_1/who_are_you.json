@@ -256,15 +256,33 @@
        "sysvarCheck":"friends",
        "sysvarResults":{
           "yes":{
-             "speak":"Whoa! You're my first friend!",
+             "speak":"Whoa! Really?",
              "emote" : "happy",
              "character":"sh",
              "scene":"blank_white"
           },
           "no":{
-             "speak":"oh.",
+             "speak":"Oh.",
              "character":"sh",
              "emote":"speak",
+             "scene":"blank_white"
+          }
+       }
+    },
+    {
+       "affected":true,
+       "sysvarCheck":"friends",
+       "sysvarResults":{
+          "yes":{
+             "speak":"You're my first friend!",
+             "emote" : "happy",
+             "character":"sh",
+             "scene":"blank_white"
+          },
+          "no":{
+             "speak":"...",
+             "character":"sh",
+             "emote":"sad",
              "scene":"blank_white"
           }
        }
@@ -280,7 +298,7 @@
              "scene":"blank_white"
           },
           "no":{
-             "speak":"...",
+             "speak":"T-Thats okay...",
              "character":"sh",
              "emote":"sadmouth",
              "scene":"blank_white"

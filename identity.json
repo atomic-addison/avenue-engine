@@ -1,0 +1,11 @@
+{
+	"homedir" : "avenue",
+	"default_locale" : "en",
+	"window_title" : "project",
+	"developer_tools_init" : false,
+	"skip_single_locale" : false,
+	"skip_single_chapter" : false,
+	"compress_previews" : true,
+	"studio" : "source.dog",
+	"version" : "0.1.1"
+}

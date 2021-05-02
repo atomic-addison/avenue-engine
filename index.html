@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>project</title>
-    <link rel="stylesheet" type="text/css" href="./style.css">
-	<script>window.$ = window.jQuery = require('jquery');</script>
+    <title>-</title>
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <script>window.$ = window.jQuery = require('jquery');</script>
     <script>
       require('./head.js')
     </script>
@@ -44,17 +44,18 @@
     <div class="page about_page ignore">
       <button class="toggle_page"><img src="./assets/img/close.png"></button>
       <div class="about_page_inner">
-        Hiya! Thanks for playing the game!<br>
-        Made by <a href="https://source.dog">me</a>!<br><br>
-        Technologies used:
+        <p>Hiya! Thanks for playing v<span class="game_version"></span> of the game!</p>
+        <p class="pmb">Made by <a href="https://source.dog">me</a>!</p>
+        <p>Technologies used:</p>
         <ul>
           <li><a href="https://jquery.com/">jQuery</a> (sorry, not sorry)</li>
           <li><a href="https://www.electronjs.org/">Electron</a></li>
           <li><a href="https://nodejs.org/en/">Node.js</a></li>
           <li><a href="https://html2canvas.hertzen.com/">html2canvas</a></li>
           <li><a href="https://github.com/pwnall/node-open">node-open</a></li>
+          <li><a href="https://www.npmjs.com/package/glob">glob</a></li>
         </ul>
-        All the drawings were made in Adobe Photoshop CC 2019.
+        <p>All the drawings were made in Adobe Photoshop CC 2019.</p>
       </div>
     </div>
   	<div class="pause_menu ignore">
@@ -77,6 +78,13 @@
   			<button class="main_quit" data-dict="quit"></button>
   		</div>
   	</div>
+    <div class="page ep_menu ignore">
+      <button class="toggle_page"><img src="./assets/img/close.png"></button>
+      <div class="inner_menu_menu">
+        <div class="inner_menu_title" data-dict="select_chapter"></div>
+        <div class="chapter_inner"></div>
+      </div>
+    </div>
   	<div class="page load_menu ignore">
   		<button class="toggle_page"><img src="./assets/img/close.png"></button>
   		<div class="inner_menu_menu">
@@ -106,23 +114,23 @@
   		</div>
   	</div>
   	<div class="page settings_menu ignore">
-		<button class="toggle_page"><img src="./assets/img/close.png"></button>
-		<div class="settings_menu_inner">
-			<div class="settings_locale">
-				<div class="settings_locale_title" data-dict="locale"></div>
-				<div class="locale_buttons"></div>
-			</div>
-      <div class="settings_split">
-        <div class="settings_split_title" data-dict="next_dialogue"></div>
-        <div class="settings_keypress">
-          <button id="pick_key"></button>
+  		<button class="toggle_page"><img src="./assets/img/close.png"></button>
+  		<div class="settings_menu_inner">
+  			<div class="settings_locale">
+  				<div class="settings_locale_title" data-dict="locale"></div>
+  				<div class="locale_buttons"></div>
+  			</div>
+        <div class="settings_split">
+          <div class="settings_split_title" data-dict="next_dialogue"></div>
+          <div class="settings_keypress">
+            <button id="pick_key"></button>
+          </div>
         </div>
-      </div>
-			<div class="settings_save_container">
-				<button class="settings_save" data-dict="save_settings"></button>
-			</div>
-		</div>
-	</div>
+  			<div class="settings_save_container">
+  				<button class="settings_save" data-dict="save_settings"></button>
+  			</div>
+  		</div>
+  	</div>
   	<div class="game_contents">
   		<button class="toggle_pause"><img src="./assets/img/bars.png"></button>
 	  	<div class="event_manager"></div>
