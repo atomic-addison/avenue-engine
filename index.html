@@ -13,18 +13,7 @@
     <div class="game_intro" data-duration="2000">
       <div class="sb-specifics">
         <div class="intro_content">
-          <div class="intro_random">
-            <span class="nbr ltr">0</span>
-            <span class="nbr ltr">0</span>
-            <span class="nbr ltr">0</span>
-            <span class="nbr ltr">0</span>
-            <span class="nbr ltr">0</span>
-            <span class="nbr ltr">0</span>
-            <span class="nbr ltr">0</span>
-            <span class="nbr ltr">0</span>
-            <span class="nbr ltr">0</span>
-            <span class="nbr ltr">0</span>
-          </div>
+          <div class="intro_random"></div>
         </div>
       </div>
     </div>
@@ -59,13 +48,13 @@
       </div>
     </div>
   	<div class="pause_menu ignore">
-  		<button class="toggle_pause"><img src="./assets/img/close.png"></button>
+  		<button class="toggle_pause toggle_pause_js"><img src="./assets/img/close.png"></button>
   		<div class="pause_menu_menu">
+        <button class="toggle_pause_js" data-dict="resume"></button>
         <button class="main_restart" data-dict="restart"></button>
   			<button class="open_page" data-page="save_menu" data-dict="save"></button>
   			<button class="open_page" data-page="load_menu" data-dict="load"></button>
   			<button class="open_page" data-page="settings_menu" data-dict="settings"></button>
-        <button class="open_page" data-page="about_page" data-dict="about"></button>
   			<button class="main_quit" data-dict="quit"></button>
   		</div>
   	</div>
@@ -132,7 +121,7 @@
   		</div>
   	</div>
   	<div class="game_contents">
-  		<button class="toggle_pause"><img src="./assets/img/bars.png"></button>
+  		<button class="toggle_pause toggle_pause_js"><img src="./assets/img/bars.png"></button>
 	  	<div class="event_manager"></div>
 	  	<div class="character"></div>
 	  	<div class="background"></div>

@@ -4,7 +4,8 @@ window.path = require('path');
 var os = require("os");
 const glob = require("glob");
 
-var loadedImagesLOL = [];
+window.loadedImages = [];
+window.imageList = [];
 
 document.addEventListener("keydown", function (e) {
     if (e.which === 123) remote.getCurrentWindow().toggleDevTools();
@@ -49,15 +50,18 @@ $(document).ready(function () {
         //SET GAME VERSION
         $(".game_version").text(window.identity.version);
 
-        var intro_randomnbr = $('.nbr');
-        var intro_timer= 10;
+        var intro_timer = 10;
         var intro_it;
         var intro_data = 0;
         var intro_index;
         var intro_change;
         var intro_letters = window.identity.studio.split("");
+        //GENERATE PLACEHOLDER CELLS FOR THE TITLE
+        $(".intro_random").empty();
+        for (var i = 0; i < intro_letters.length; i++) $(".intro_random").append(`<span class="nbr ltr">0</span>`);
         var final_arr = [];
         window.introComplete = false;
+        var intro_randomnbr = $('.nbr');
 
         intro_randomnbr.each(function(){
             intro_change = Math.round(Math.random()*100);
@@ -207,9 +211,11 @@ $(document).ready(function () {
         getDirectories(path.join(__dirname, '/assets/'), function (err, res) {
             if (err) return console.log(err);
 
+            window.imageList = res;
+                
             for (var i = 0; i < res.length; i++) {
-                loadedImagesLOL.push((new Image()));
-                loadedImagesLOL[loadedImagesLOL.length - 1].src=res[i]
+                loadedImages.push((new Image()));
+                loadedImages[loadedImages.length - 1].src=res[i];
             }
             //ENSURE INSTANCE HOME DIRECTORY EXISTS
             ensureDirectory(window.home_dir, function() {

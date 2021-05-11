@@ -51,6 +51,14 @@ function drawImageProp(ctx, img, x, y, w, h, offsetX, offsetY) {
     ctx.drawImage(img, cx, cy, cw, ch,  x, y, w, h);
 }
 
+function imageCached(image) {
+	for (var i = 0; i < window.imageList.length; i++) {
+		if (path.normalize(window.imageList[i]) == path.normalize(image)) return true;
+	}
+
+	return false;
+}
+
 //MAIN GAME CONTROLLER
 class gameManager{
 	constructor(args){
@@ -251,10 +259,14 @@ class character{
 		$(".choice_area").addClass("inactive");
 
 		if (args.emote) {
+			var emoteURL = path.join(__dirname, 'assets', 'characters', this.dirname, this.pseudonym+'_'+args.emote+'.png');
+
+			if (!imageCached(emoteURL)) emoteURL = path.join(__dirname, 'assets', 'img', 'dummy.png');
+		
 			$(".character").show();
 			$(".character").append(`
 				<div class="charimagewrapper ${args.flip_emote?'flipped':''}">
-					<img src="${path.join(__dirname, 'assets', 'characters', this.dirname, this.pseudonym+'_'+args.emote+'.png')}">
+					<img src="${emoteURL}">
 				</div>
 			`);
 		}
@@ -271,20 +283,19 @@ class character{
 		}
 
 		if (args.guest) {
-			if (args.guest.order == 1) {
-				$(".character").append(`
-					<div class="charimagewrapper">
-						<img src="${path.join(__dirname, 'assets', 'characters', this.guest(args.guest).dirname, this.guest(args.guest).pseudonym+'_'+args.guest.emote+'.png')}">
-					</div>
-				`);
-			}
-			else{
-				$(".character").prepend(`
-					<div class="charimagewrapper">
-						<img src="${path.join(__dirname, 'assets', 'characters', this.guest(args.guest).dirname, this.guest(args.guest).pseudonym+'_'+args.guest.emote+'.png')}">
-					</div>
-				`);
-			}
+			//THIS WILL NOT VALIDATE IF YOU HAVE AN UNDEFINED GUEST, BUT WHY WOULD YOU ANYWAY
+			var guestEmoteURL = path.join(__dirname, 'assets', 'characters', this.guest(args.guest).dirname, this.guest(args.guest).pseudonym+'_'+args.guest.emote+'.png');
+
+			if (!imageCached(guestEmoteURL)) guestEmoteURL = path.join(__dirname, 'assets', 'img', 'dummy.png');
+
+			var dataToAppend = `
+				<div class="charimagewrapper ${args.guest.flip_emote?'flipped':''}">
+					<img src="${guestEmoteURL}">
+				</div>
+			`;
+
+			if (args.guest.order == 1) $(".character").append(dataToAppend);
+			else $(".character").prepend(dataToAppend);
 		}
 
 		$(".event_manager").unbind();
@@ -530,7 +541,7 @@ $(document).on("langload", function(){
 		startGameFromChapter($(this).data("chid"));
 	});
 
-	$(".toggle_pause").click(function(e){
+	$(".toggle_pause_js").click(function(e){
 		e.stopPropagation();
 
 		if (!window.game.paused) {

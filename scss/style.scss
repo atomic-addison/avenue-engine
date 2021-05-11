@@ -323,7 +323,13 @@ p {
 		top: 0px;
 
 		.intro_random {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
 			span {
+				display: inline-flex;
+				margin: 2px;
 				font-family: monospace;
 				font-size: 12px;
 				text-decoration: underline;

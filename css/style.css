@@ -257,10 +257,16 @@ p {
     right: 0px;
     bottom: 0px;
     top: 0px; }
-    .game_intro .sb-specifics .intro_random span {
-      font-family: monospace;
-      font-size: 12px;
-      text-decoration: underline; }
+    .game_intro .sb-specifics .intro_random {
+      display: flex;
+      justify-content: center;
+      align-items: center; }
+      .game_intro .sb-specifics .intro_random span {
+        display: inline-flex;
+        margin: 2px;
+        font-family: monospace;
+        font-size: 12px;
+        text-decoration: underline; }
   .game_intro:before {
     opacity: 0;
     transition: opacity 1.5s;

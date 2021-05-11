@@ -1,5 +1,4 @@
 [
-
     {
         "character":"av",
         "emote":"phone_sweating",
@@ -291,6 +290,83 @@
           "order":0,
           "character":"av",
           "emote":"blush"
+        }
+    },
+    {
+       "affected":true,
+       "sysvarCheck":"coffee",
+       "sysvarResults":{
+          "mocca":{
+            "character":"nv",
+            "emote":"arms_smug_speak",
+            "speak":"Well, I don't have a cup of \"moccasin\" on me, buuut...",
+            "scene":"street_closed",
+            "guest":{
+              "order":0,
+              "character":"av",
+              "emote":"blush_sweat"
+            }
+          },
+          "cappucino":{
+            "character":"nv",
+            "emote":"arms_smug_speak",
+            "speak":"Well, I don't have a \"cup-of-chino\" on me, buuut...",
+            "scene":"street_closed",
+            "guest":{
+              "order":0,
+              "character":"av",
+              "emote":"blush_sweat"
+            }
+          },
+          "espresso":{
+            "character":"nv",
+            "emote":"arms_smug_speak",
+            "speak":"Well, I don't have a cup of \"expresso\" on me, buuut...",
+            "scene":"street_closed",
+            "guest":{
+              "order":0,
+              "character":"av",
+              "emote":"blush_sweat"
+            }
+          }
+       }
+    },
+    {
+        "character":"nv",
+        "emote":"pockets_speak",
+        "speak":"A cool new coffee joint just opened up right around the corner here.",
+        "scene":"street_closed",
+        "guest":{
+          "order":0,
+          "character":"av",
+          "emote":"blush"
+        }
+    },
+    {
+        "character":"nv",
+        "emote":"smug_speak",
+        "speak":"And I am taking you with me!",
+        "scene":"street_closed",
+        "guest":{
+          "order":0,
+          "character":"av",
+          "emote":"blush_sweat"
+        }
+    },
+    {
+        "character":"p",
+        "scene":"blank_black"
+    },
+    {
+        "character":"nv",
+        "emote":"test",
+        "speak":"Come on, give it a sip, it doesn't bite.",
+        "scene":"blank_white",
+        "flip_emote" : 1,
+        "guest":{
+          "order":0,
+          "character":"av",
+          "emote":"test"
         }
     }
 ]
