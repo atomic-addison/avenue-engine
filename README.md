@@ -1,2 +1,10 @@
 # avenue-engine
-This is just the GitHub mirror of the BitBucket version of avenue-engine (a from-scratch electron/jquery visual novel engine)
+
+jQuery/Electron visual novel engine.
+
+# features so far
+
+load/save states with previews
+multi-chapter mode
+multiple locales mode
+divering story paths
