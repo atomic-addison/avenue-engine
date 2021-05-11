@@ -416,7 +416,7 @@ class customPrompt{
 				$btn.click(() => {
 					args.callback(args.options[i].value);
 
-					$(".confirm_page").hide();
+					if (!args.chain) $(".confirm_page").hide();
 				});
 
 				$(".confirm_page").find(".confirm_choices").append($btn);
@@ -604,22 +604,44 @@ $(document).on("langload", function(){
 		e.stopPropagation();
 
 		new customPrompt({
-			text: window.lang_dict.quit_confirm,
 			options: [
 				{
-					"text" : window.lang_dict.sure,
-					"value" : true
+					"text" : window.lang_dict.quit_main,
+					"value" : false
 				},
 				{
-					"text" : window.lang_dict.nope,
-					"value" : false
+					"text" : window.lang_dict.quit_desktop,
+					"value" : true
 				}
 			],
+			chain: true,
 			default: false,
 			callback: (e) => {
-				if (e) remote.getCurrentWindow().close();
+				if (e) {
+					new customPrompt({
+						text: window.lang_dict.quit_confirm,
+						options: [
+							{
+								"text" : window.lang_dict.sure,
+								"value" : true
+							},
+							{
+								"text" : window.lang_dict.nope,
+								"value" : false
+							}
+						],
+						default: false,
+						callback: (e) => {
+							if (e) remote.getCurrentWindow().close();
+						}
+					});
+				}
+				else {
+
+				}
 			}
 		});
+
 	});
 
 	$(".main_restart").click(function(e){
@@ -669,9 +691,7 @@ $(document).on("langload", function(){
 		$("." + $(this).data("page")).show();
 	});
 
-	$(".ignore").click(function(e){
-		e.stopPropagation();
-	});
+	$(".ignore").click(function(e){ e.stopPropagation(); });
 
 	$('a').click(function(e){
 		if ($(this).attr("href") && $(this).attr("href").startsWith("http")) {
