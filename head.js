@@ -242,6 +242,8 @@ $(document).ready(function () {
                                 window.loadingComplete = true;
                                 //SKIP SINGLE LOCALE SELECTION IF SET IN IDENTITY SETTINGS
                                 if (window.identity.skip_single_locale && e.length < 2) {
+                                    //HIDE LOCALE SELECTION IN THE SETTINGS MENU
+                                    $(".settings_locale").hide();
                                     window.appSettings.locale = path.basename(e[0]);
                                     //UPDATE LOCALE SELECTION IN THE SETTINGS FILE
                                     cacheSettings(function () {
@@ -272,6 +274,9 @@ $(document).ready(function () {
                                 }
                             }
                             else {
+                                //HIDE LOCALE SELECTION IN THE SETTINGS IF THERE IS ONE LOCALE AND SKIP IS TRUE
+                                if (window.identity.skip_single_locale && e.length < 2) $(".settings_locale").hide();
+
                                 //LOAD SELECTED LOCALE DICTIONARY
                                 loadDictionary(window.appSettings.locale, function() {
                                     //READ THE CHAPTERS IN SELECTED LOCALE

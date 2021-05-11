@@ -404,15 +404,106 @@ class customPrompt{
 		$(".confirm_page").show();
 	}
 }
+//SAVE MANAGER
+class saveManager{
+	constructor(args = {}){
+		this.saveDir = args.saveDir || path.join(window.home_dir, '/saves/');
 
-function generateGameObject(data) {
-	window.game = new gameManager(data);
+		//GENERATE SAVES
+		this.genSaves();
+	}
+
+	parseSaves(){
+		//READ THE SAVES DIRECTORY
+		fs.readdir(this.saveDir, (err, files) => {
+			files.forEach(file => {
+				//GET SLOT NUMBER OF EACH SAVE
+				var slotNum = path.basename(file, '.json').split("_")[1];
+				//GET IMAGE PREVIEW OF EACH SAVE
+				var grabPreview = requireUncached(path.join(this.saveDir, file));
+				//RESET SAVE AND LOAD SLOTS BEFORE APPENDING
+				$(`.lmm_slot_` + slotNum).empty();
+				$(`.smm_slot_` + slotNum).empty();
+				//IF PREVIEW EXISTS, APPEND TO SAVE AND LOAD SLOTS
+				if (grabPreview.imgdata) {
+					$(`.lmm_slot_` + slotNum).append(`<img class="i_slot_preview" src="${grabPreview.imgdata}">`);
+					$(`.smm_slot_` + slotNum).append(`<img class="i_slot_preview" src="${grabPreview.imgdata}">`);
+				}
+				//APPEND A LOAD SAVE BUTTON TO THE LOAD SLOT
+				$(`.lmm_slot_` + slotNum).append(`<button class="act_load act_l_${slotNum}" data-chapter="${grabPreview.chapter}" data-loadnum="${slotNum}">${window.lang_dict.slot} ${slotNum}</button>`);
+				//ATTACH A LISTENER TO EACH LOAD BUTTON
+				$(`.act_load.act_l_` + slotNum).click((e) => {
+					//IF THE GAME IS INITIALIZED, LOAD STATE
+					if (window.game) window.game.loadState($(e.target).data("loadnum"));
+					//IF NOT, START THE GAME WITH THE RIGHT CHAPTER AND LOAD STATE
+					else {
+						startGameFromChapter($(e.target).data("chapter"));
+						window.game.loadState($(e.target).data("loadnum"));
+					}
+				});
+			});
+
+			for (var i = 0; i < $(".imm_inner").find('.i_slot').length; i++) {
+				$(`.smm_slot_` + i).append(`<button class="act_save act_s_${i}" data-savenum="${i}"><span>${window.lang_dict.slot}</span> ${i}</button>`);
+
+				$(`.act_save.act_s_` + i).click((e) => {
+					if ($(this).siblings('img').length) {
+						new customPrompt({
+							text: window.lang_dict.overwrite_confirm,
+							options: [
+								{
+									"text" : window.lang_dict.sure,
+									"value" : true
+								},
+								{
+									"text" : window.lang_dict.nope,
+									"value" : false
+								}
+							],
+							default: false,
+							callback: (e) => {
+								if (e) {
+									window.game.saveState($(e.target).data("savenum"), () => {
+										this.genSaves(path.join(window.home_dir, '/saves/'));
+
+										$(".save_menu").hide();
+									});
+								}
+							}
+						});
+					}
+					else{
+						window.game.saveState($(e.target).data("savenum"), () => {
+							this.genSaves(path.join(window.home_dir, '/saves/'));
+
+							$(".save_menu").hide();
+						});
+					}
+				});
+			}
+		});
+	}
+
+	genSaves(){
+		//CHECK IF SAVES DIR EXISTS
+		fs.access(this.saveDir, error => {
+		    if (error){
+		    	//CREATE SAVES DIR IF NOT EXISTS
+		        fs.mkdir(this.saveDir, (err) => {
+				    if (err) throw err;
+
+				    this.parseSaves();
+				});
+		    }
+		    else this.parseSaves(); 
+		});
+	}
 }
 
 function startGameFromChapter(chap_id) {
 	console.log("ENTRY", window.chapterList.find(x => x.id === chap_id).entry);
 	//CREATE NEW GAME INSTANCE FROM SELECTED CHAPTER ENTRY FILE
-	generateGameObject({
+	window.game = new gameManager({
 		chapter: chap_id,
 		actionSet: window.chapterList.find(x => x.id === chap_id).entry,
 		locale: window.appSettings.locale
@@ -436,94 +527,11 @@ function startGameFromChapter(chap_id) {
 $(document).on("langload", function(){
 	//LOAD CHARACTER DATA FROM APPROPRIATE LOCALE
 	var charData = require(path.join(__dirname, `/game_data/${window.appSettings.locale}/data/characters.json`));
-	//CRATE A CHARACTER LIST WITH THE LOADED CHARDATA
+	//CREATE A CHARACTER LIST WITH THE LOADED CHARDATA
 	window.charlist = new charList(charData);
-	
-	function parseSaves(pathSaves){
-		fs.readdir(pathSaves, (err, files) => {
-			files.forEach(file => {
-				var slotNum = path.basename(file, '.json').split("_")[1];
 
-				var grabPreview = requireUncached(path.join(pathSaves, file));
-	
-				$(`.lmm_slot_` + slotNum).empty();
-				$(`.smm_slot_` + slotNum).empty();
-
-				if (grabPreview.imgdata) {
-					$(`.lmm_slot_` + slotNum).append(`<img class="i_slot_preview" src="${grabPreview.imgdata}">`);
-					$(`.smm_slot_` + slotNum).append(`<img class="i_slot_preview" src="${grabPreview.imgdata}">`);
-				}
-	
-				$(`.lmm_slot_` + slotNum).append(`<button class="act_load act_l_${slotNum}" data-loadnum="${slotNum}">${window.lang_dict.slot} ${slotNum}</button>`);
-	
-				$(`.act_load.act_l_` + slotNum).click(function(){
-					//TEMPORARY FIX FOR LACK OF CHAPTER DATA WHEN LOADING
-					if (window.game) window.game.loadState($(this).data("loadnum"));
-					else fs.readFile(path.join(path.join(window.home_dir, '/saves/'), '/slot_' + $(this).data("loadnum") + '.json'), (err, data) => {
-						var fileContents = JSON.parse(data);
-						startGameFromChapter(fileContents.chapter);
-
-						window.game.loadState($(this).data("loadnum"));
-					});
-				});
-
-			});
-
-			for (var i = 0; i < $(".imm_inner").find('.i_slot').length; i++) {
-				$(`.smm_slot_` + i).append(`<button class="act_save act_s_${i}" data-savenum="${i}"><span>${window.lang_dict.slot}</span> ${i}</button>`);
-
-				$(`.act_save.act_s_` + i).click(function(){
-					if ($(this).siblings('img').length) {
-						new customPrompt({
-							text: window.lang_dict.overwrite_confirm,
-							options: [
-								{
-									"text" : window.lang_dict.sure,
-									"value" : true
-								},
-								{
-									"text" : window.lang_dict.nope,
-									"value" : false
-								}
-							],
-							default: false,
-							callback: (e) => {
-								if (e) {
-									window.game.saveState($(this).data("savenum"), function(){
-										genSaves(path.join(window.home_dir, '/saves/'));
-
-										$(".save_menu").hide();
-									});
-								}
-							}
-						});
-					}
-					else{
-						window.game.saveState($(this).data("savenum"), function(){
-							genSaves(path.join(window.home_dir, '/saves/'));
-
-							$(".save_menu").hide();
-						});
-					}
-				});
-			}
-		});
-	}
-
-	function genSaves(pathSaves){
-		fs.access(pathSaves, error => {
-		    if (error){
-		        fs.mkdir(pathSaves, (err) => {
-				    if (err) throw err;
-
-				    parseSaves(pathSaves);
-				});
-		    }
-		    else parseSaves(pathSaves); 
-		});
-	}
-	
-	genSaves(path.join(window.home_dir, '/saves/'));
+	//CREATE A NEW SAVE MANAGER
+	window.saveManager = new saveManager();
 	
 	$(".main_play").click(function(e){
 		e.stopPropagation();
