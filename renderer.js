@@ -74,7 +74,7 @@ class gameManager{
 		this.iterator = 0;
 	}
 	act(actions){
-		if(!actions || actions.length<1) console.log("No actions!", actions);
+		if(!actions || actions.length<1) return console.log("No actions!", actions);
 
 		if (actions[0].affected) {
 			var selectSysvarResult = actions[0].sysvarResults[this.sysvars[actions[0].sysvarCheck]];
@@ -84,27 +84,31 @@ class gameManager{
 			this.nextMove(selectSysvarResult.character, selectSysvarResult, actions);
 		}
 		else{
-			if (!charlist.findChar(actions[0].character)) {
-				console.log("Can't find the character, returning...");
-				return;
-			}
+			if (!charlist.findChar(actions[0].character)) return console.log("Can't find the character, returning...");
 
 			this.currentChar = charlist.findChar(actions[0].character);
 
 			this.nextMove(actions[0].character, actions[0], actions);
 		}
+
 		this.iterator++;
 	}
 	nextMove(character, result, actions){
 		charlist.findChar(character).do(result, () => {
+			//NEXT ACTION IS SET IN THE CURRENT FILE
 			if (!actions[0].next) {
+				//MOVE TO NEXT ACTION
 				actions.shift();
-				if (actions.length>0) this.act(actions);
+				//ACT THE NEXT ACTION
+				if (actions.length > 0) this.act(actions);
+				//END THE GAME IF NO ACTIONS LEFT
 				else {
 					$(".event_manager").unbind();
 					$(document).unbind("keyup_next");
+					this.endGame();
 				}
 			}
+			//NEXT ACTION SET IN A DIFFERENT FILE
 			else{
 				this.actionSet = actions[0].next;
 				this.actions = requireUncached(path.join(__dirname, `/game_data/${window.appSettings.locale}/chapters/${this.chapter}/${actions[0].next}.json`));
@@ -183,20 +187,41 @@ class gameManager{
 		});
 	}
 	restart(){
-		$(".page").hide();
-
-		$(".main_menu").hide();
-		$(".pause_menu").hide();
-		this.paused = false;
-		$(".game_contents").show();
-	
 		this.actionSet =  window.chapterList.find(x => x.id === this.chapter).entry;
-
 		this.actions = requireUncached(path.join(__dirname, `/game_data/${window.appSettings.locale}/chapters/${this.chapter}/primary_script.json`));
 		this.sysvars = {};
 		this.actionStep = 0;
 		this.iterator = 0;
-		this.act(this.actions);
+
+		this.startGame();
+	}
+	startGame(){
+		//PREVENT ACCIDENTAL DOUBLE SELECTION WITH A SKIP KEY
+		if (!this.paused) return;
+		//START GAME AND UNPAUSE THE DEFAULT GAME INSTANCE
+		this.paused = false;
+		//HIDE ALL PAGES
+		$(".page").hide();
+		//HIDE PAUSE MENU
+		$(".pause_menu").hide();
+		//HIDE MAIN MENU
+		$('.main_menu').hide();
+		//FADE OUT THE CHAPTER MENU SLOWLY
+		$('.ep_menu').fadeOut('slow', () => {
+			//DRAW THE SCENE
+			$(".game_contents").show();
+			//RUN FIRST SLIDE IN CHAPTER
+			this.act(this.actions);
+		});
+	}
+	endGame() {
+		console.log("No more actions left!");
+		//GAME RESET
+		this.paused = false;
+		$(".game_contents").fadeOut('slow', () => {
+			//GAME IS OVER, IF YOU WANT A GAME OVER SCREEN, SHOW IT HERE
+			$('.main_menu').fadeIn();
+		});
 	}
 }
 //CHARACTER INSTANCE
@@ -391,7 +416,7 @@ class customPrompt{
 				$btn.click(() => {
 					args.callback(args.options[i].value);
 
-					$(".confirm_page").hide();
+					if (!args.chain) $(".confirm_page").hide();
 				});
 
 				$(".confirm_page").find(".confirm_choices").append($btn);
@@ -404,75 +429,49 @@ class customPrompt{
 		$(".confirm_page").show();
 	}
 }
+//SAVE MANAGER
+class saveManager{
+	constructor(args = {}){
+		this.saveDir = args.saveDir || path.join(window.home_dir, '/saves/');
 
-function generateGameObject(data) {
-	window.game = new gameManager(data);
-}
+		//GENERATE SAVES
+		this.genSaves();
+	}
 
-function startGameFromChapter(chap_id) {
-	console.log("ENTRY", window.chapterList.find(x => x.id === chap_id).entry);
-	//CREATE NEW GAME INSTANCE FROM SELECTED CHAPTER ENTRY FILE
-	generateGameObject({
-		chapter: chap_id,
-		actionSet: window.chapterList.find(x => x.id === chap_id).entry,
-		locale: window.appSettings.locale
-	});
-	//PREVENT ACCIDENTAL DOUBLE SELECTION WITH A SKIP KEY
-	if (!window.game.paused) return;
-	//START GAME AND UNPAUSE THE DEFAULT GAME INSTANCE
-	window.game.paused = false;
-	//HIDE MAIN MENU
-	$('.main_menu').hide();
-	//FADE OUT THE CHAPTER MENU SLOWLY
-	$('.ep_menu').fadeOut('slow', function() {
-		//DRAW THE SCENE
-		$(".game_contents").show();
-		//RUN FIRST SLIDE IN CHAPTER
-		window.game.act(window.game.actions);
-	});
-}
-
-//LOAD PRIMARY GAME SCRIPT
-$(document).on("langload", function(){
-	//LOAD CHARACTER DATA FROM APPROPRIATE LOCALE
-	var charData = require(path.join(__dirname, `/game_data/${window.appSettings.locale}/data/characters.json`));
-	//CRATE A CHARACTER LIST WITH THE LOADED CHARDATA
-	window.charlist = new charList(charData);
-	
-	function parseSaves(pathSaves){
-		fs.readdir(pathSaves, (err, files) => {
+	parseSaves(){
+		//READ THE SAVES DIRECTORY
+		fs.readdir(this.saveDir, (err, files) => {
 			files.forEach(file => {
+				//GET SLOT NUMBER OF EACH SAVE
 				var slotNum = path.basename(file, '.json').split("_")[1];
-
-				var grabPreview = requireUncached(path.join(pathSaves, file));
-	
+				//GET IMAGE PREVIEW OF EACH SAVE
+				var grabPreview = requireUncached(path.join(this.saveDir, file));
+				//RESET SAVE AND LOAD SLOTS BEFORE APPENDING
 				$(`.lmm_slot_` + slotNum).empty();
 				$(`.smm_slot_` + slotNum).empty();
-
+				//IF PREVIEW EXISTS, APPEND TO SAVE AND LOAD SLOTS
 				if (grabPreview.imgdata) {
 					$(`.lmm_slot_` + slotNum).append(`<img class="i_slot_preview" src="${grabPreview.imgdata}">`);
 					$(`.smm_slot_` + slotNum).append(`<img class="i_slot_preview" src="${grabPreview.imgdata}">`);
 				}
-	
-				$(`.lmm_slot_` + slotNum).append(`<button class="act_load act_l_${slotNum}" data-loadnum="${slotNum}">${window.lang_dict.slot} ${slotNum}</button>`);
-	
-				$(`.act_load.act_l_` + slotNum).click(function(){
-					//TEMPORARY FIX FOR LACK OF CHAPTER DATA WHEN LOADING
-					if (window.game) window.game.loadState($(this).data("loadnum"));
-					else fs.readFile(path.join(path.join(window.home_dir, '/saves/'), '/slot_' + $(this).data("loadnum") + '.json'), (err, data) => {
-						var fileContents = JSON.parse(data);
-						startGameFromChapter(fileContents.chapter);
-
-						window.game.loadState($(this).data("loadnum"));
-					});
+				//APPEND A LOAD SAVE BUTTON TO THE LOAD SLOT
+				$(`.lmm_slot_` + slotNum).append(`<button class="act_load act_l_${slotNum}" data-chapter="${grabPreview.chapter}" data-loadnum="${slotNum}">${window.lang_dict.slot} ${slotNum}</button>`);
+				//ATTACH A LISTENER TO EACH LOAD BUTTON
+				$(`.act_load.act_l_` + slotNum).click((e) => {
+					//IF THE GAME IS INITIALIZED, LOAD STATE
+					if (window.game) window.game.loadState($(e.target).data("loadnum"));
+					//IF NOT, START THE GAME WITH THE RIGHT CHAPTER AND LOAD STATE
+					else {
+						startGameFromChapter($(e.target).data("chapter"));
+						window.game.loadState($(e.target).data("loadnum"));
+					}
 				});
-
 			});
 
 			for (var i = 0; i < $(".imm_inner").find('.i_slot').length; i++) {
 				$(`.smm_slot_` + i).append(`<button class="act_save act_s_${i}" data-savenum="${i}"><span>${window.lang_dict.slot}</span> ${i}</button>`);
 
-				$(`.act_save.act_s_` + i).click(function(){
+				$(`.act_save.act_s_` + i).click((e) => {
 					if ($(this).siblings('img').length) {
 						new customPrompt({
 							text: window.lang_dict.overwrite_confirm,
@@ -489,8 +488,8 @@ $(document).on("langload", function(){
 							default: false,
 							callback: (e) => {
 								if (e) {
-									window.game.saveState($(this).data("savenum"), function(){
-										genSaves(path.join(window.home_dir, '/saves/'));
+									window.game.saveState($(e.target).data("savenum"), () => {
+										this.genSaves(path.join(window.home_dir, '/saves/'));
 
 										$(".save_menu").hide();
 									});
@@ -499,8 +498,8 @@ $(document).on("langload", function(){
 						});
 					}
 					else{
-						window.game.saveState($(this).data("savenum"), function(){
-							genSaves(path.join(window.home_dir, '/saves/'));
+						window.game.saveState($(e.target).data("savenum"), () => {
+							this.genSaves(path.join(window.home_dir, '/saves/'));
 
 							$(".save_menu").hide();
 						});
@@ -510,20 +509,42 @@ $(document).on("langload", function(){
 		});
 	}
 
-	function genSaves(pathSaves){
-		fs.access(pathSaves, error => {
+	genSaves(){
+		//CHECK IF SAVES DIR EXISTS
+		fs.access(this.saveDir, error => {
 		    if (error){
-		        fs.mkdir(pathSaves, (err) => {
+		    	//CREATE SAVES DIR IF NOT EXISTS
+		        fs.mkdir(this.saveDir, (err) => {
 				    if (err) throw err;
 
-				    parseSaves(pathSaves);
+				    this.parseSaves();
 				});
 		    }
-		    else parseSaves(pathSaves); 
+		    else this.parseSaves(); 
 		});
 	}
-	
-	genSaves(path.join(window.home_dir, '/saves/'));
+}
+
+function startGameFromChapter(chap_id) {
+	//CREATE NEW GAME INSTANCE FROM SELECTED CHAPTER ENTRY FILE
+	window.game = new gameManager({
+		chapter: chap_id,
+		actionSet: window.chapterList.find(x => x.id === chap_id).entry,
+		locale: window.appSettings.locale
+	});
+
+	window.game.startGame();
+}
+
+//LOAD PRIMARY GAME SCRIPT
+$(document).on("langload", function(){
+	//LOAD CHARACTER DATA FROM APPROPRIATE LOCALE
+	var charData = require(path.join(__dirname, `/game_data/${window.appSettings.locale}/data/characters.json`));
+	//CREATE A CHARACTER LIST WITH THE LOADED CHARDATA
+	window.charlist = new charList(charData);
+
+	//CREATE A NEW SAVE MANAGER
+	window.saveManager = new saveManager();
 	
 	$(".main_play").click(function(e){
 		e.stopPropagation();
@@ -583,22 +604,44 @@ $(document).on("langload", function(){
 		e.stopPropagation();
 
 		new customPrompt({
-			text: window.lang_dict.quit_confirm,
 			options: [
 				{
-					"text" : window.lang_dict.sure,
-					"value" : true
+					"text" : window.lang_dict.quit_main,
+					"value" : false
 				},
 				{
-					"text" : window.lang_dict.nope,
-					"value" : false
+					"text" : window.lang_dict.quit_desktop,
+					"value" : true
 				}
 			],
+			chain: true,
 			default: false,
 			callback: (e) => {
-				if (e) remote.getCurrentWindow().close();
+				if (e) {
+					new customPrompt({
+						text: window.lang_dict.quit_confirm,
+						options: [
+							{
+								"text" : window.lang_dict.sure,
+								"value" : true
+							},
+							{
+								"text" : window.lang_dict.nope,
+								"value" : false
+							}
+						],
+						default: false,
+						callback: (e) => {
+							if (e) remote.getCurrentWindow().close();
+						}
+					});
+				}
+				else {
+
+				}
 			}
 		});
+
 	});
 
 	$(".main_restart").click(function(e){
@@ -648,9 +691,7 @@ $(document).on("langload", function(){
 		$("." + $(this).data("page")).show();
 	});
 
-	$(".ignore").click(function(e){
-		e.stopPropagation();
-	});
+	$(".ignore").click(function(e){ e.stopPropagation(); });
 
 	$('a').click(function(e){
 		if ($(this).attr("href") && $(this).attr("href").startsWith("http")) {
@@ -668,12 +709,6 @@ $(document).on("langload", function(){
 		}
 	});
 });
-
-//TODO
-
-//fix the unnecessarily overengineered loading saves code
-//add characterless dialogue (fullscreen reading, etc bs)
-/*at some point the dialogue gets assigned to the character instance in the game object, instead of the character instance in the charlist object, which is an error because the character instance in the game object is just a pseudonym supposedly*/
 
 //NOTES
 
