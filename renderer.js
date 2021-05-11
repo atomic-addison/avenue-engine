@@ -74,7 +74,7 @@ class gameManager{
 		this.iterator = 0;
 	}
 	act(actions){
-		if(!actions || actions.length<1) console.log("No actions!", actions);
+		if(!actions || actions.length<1) return console.log("No actions!", actions);
 
 		if (actions[0].affected) {
 			var selectSysvarResult = actions[0].sysvarResults[this.sysvars[actions[0].sysvarCheck]];
@@ -84,27 +84,31 @@ class gameManager{
 			this.nextMove(selectSysvarResult.character, selectSysvarResult, actions);
 		}
 		else{
-			if (!charlist.findChar(actions[0].character)) {
-				console.log("Can't find the character, returning...");
-				return;
-			}
+			if (!charlist.findChar(actions[0].character)) return console.log("Can't find the character, returning...");
 
 			this.currentChar = charlist.findChar(actions[0].character);
 
 			this.nextMove(actions[0].character, actions[0], actions);
 		}
+
 		this.iterator++;
 	}
 	nextMove(character, result, actions){
 		charlist.findChar(character).do(result, () => {
+			//NEXT ACTION IS SET IN THE CURRENT FILE
 			if (!actions[0].next) {
+				//MOVE TO NEXT ACTION
 				actions.shift();
-				if (actions.length>0) this.act(actions);
+				//ACT THE NEXT ACTION
+				if (actions.length > 0) this.act(actions);
+				//END THE GAME IF NO ACTIONS LEFT
 				else {
 					$(".event_manager").unbind();
 					$(document).unbind("keyup_next");
+					this.endGame();
 				}
 			}
+			//NEXT ACTION SET IN A DIFFERENT FILE
 			else{
 				this.actionSet = actions[0].next;
 				this.actions = requireUncached(path.join(__dirname, `/game_data/${window.appSettings.locale}/chapters/${this.chapter}/${actions[0].next}.json`));
@@ -183,20 +187,41 @@ class gameManager{
 		});
 	}
 	restart(){
-		$(".page").hide();
-
-		$(".main_menu").hide();
-		$(".pause_menu").hide();
-		this.paused = false;
-		$(".game_contents").show();
-	
 		this.actionSet =  window.chapterList.find(x => x.id === this.chapter).entry;
-
 		this.actions = requireUncached(path.join(__dirname, `/game_data/${window.appSettings.locale}/chapters/${this.chapter}/primary_script.json`));
 		this.sysvars = {};
 		this.actionStep = 0;
 		this.iterator = 0;
-		this.act(this.actions);
+
+		this.startGame();
+	}
+	startGame(){
+		//PREVENT ACCIDENTAL DOUBLE SELECTION WITH A SKIP KEY
+		if (!this.paused) return;
+		//START GAME AND UNPAUSE THE DEFAULT GAME INSTANCE
+		this.paused = false;
+		//HIDE ALL PAGES
+		$(".page").hide();
+		//HIDE PAUSE MENU
+		$(".pause_menu").hide();
+		//HIDE MAIN MENU
+		$('.main_menu').hide();
+		//FADE OUT THE CHAPTER MENU SLOWLY
+		$('.ep_menu').fadeOut('slow', () => {
+			//DRAW THE SCENE
+			$(".game_contents").show();
+			//RUN FIRST SLIDE IN CHAPTER
+			this.act(this.actions);
+		});
+	}
+	endGame() {
+		console.log("No more actions left!");
+		//GAME RESET
+		this.paused = false;
+		$(".game_contents").fadeOut('slow', () => {
+			//GAME IS OVER, IF YOU WANT A GAME OVER SCREEN, SHOW IT HERE
+			$('.main_menu').fadeIn();
+		});
 	}
 }
 //CHARACTER INSTANCE
@@ -501,26 +526,14 @@ class saveManager{
 }
 
 function startGameFromChapter(chap_id) {
-	console.log("ENTRY", window.chapterList.find(x => x.id === chap_id).entry);
 	//CREATE NEW GAME INSTANCE FROM SELECTED CHAPTER ENTRY FILE
 	window.game = new gameManager({
 		chapter: chap_id,
 		actionSet: window.chapterList.find(x => x.id === chap_id).entry,
 		locale: window.appSettings.locale
 	});
-	//PREVENT ACCIDENTAL DOUBLE SELECTION WITH A SKIP KEY
-	if (!window.game.paused) return;
-	//START GAME AND UNPAUSE THE DEFAULT GAME INSTANCE
-	window.game.paused = false;
-	//HIDE MAIN MENU
-	$('.main_menu').hide();
-	//FADE OUT THE CHAPTER MENU SLOWLY
-	$('.ep_menu').fadeOut('slow', function() {
-		//DRAW THE SCENE
-		$(".game_contents").show();
-		//RUN FIRST SLIDE IN CHAPTER
-		window.game.act(window.game.actions);
-	});
+
+	window.game.startGame();
 }
 
 //LOAD PRIMARY GAME SCRIPT
@@ -679,7 +692,6 @@ $(document).on("langload", function(){
 
 //TODO
 
-//fix the unnecessarily overengineered loading saves code
 //add characterless dialogue (fullscreen reading, etc bs)
 /*at some point the dialogue gets assigned to the character instance in the game object, instead of the character instance in the charlist object, which is an error because the character instance in the game object is just a pseudonym supposedly*/
 
