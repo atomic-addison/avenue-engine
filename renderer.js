@@ -690,11 +690,6 @@ $(document).on("langload", function(){
 	});
 });
 
-//TODO
-
-//add characterless dialogue (fullscreen reading, etc bs)
-/*at some point the dialogue gets assigned to the character instance in the game object, instead of the character instance in the charlist object, which is an error because the character instance in the game object is just a pseudonym supposedly*/
-
 //NOTES
 
 //objectfit still doesnt work in html2canvas as of 2/9/2020 (FIXED TEMPORARILY WITH ALIGN SELF)
