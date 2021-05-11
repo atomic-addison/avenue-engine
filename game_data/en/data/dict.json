@@ -18,6 +18,8 @@
     "overwrite_confirm" : "Are you sure you want to overwrite this save?",
     "quit_confirm" : "Are you sure you want to quit the game?",
     "select_chapter" : "Select a chapter",
+    "quit_main" : "Quit to main menu",
+    "quit_desktop" : "Quit to desktop",
     "keyNames" : {
         "8" : "Backspace",   
         "9" : "Tab",

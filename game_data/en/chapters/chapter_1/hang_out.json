@@ -359,14 +359,24 @@
     },
     {
         "character":"nv",
-        "emote":"test",
+        "emote":"coffee_speak",
         "speak":"Come on, give it a sip, it doesn't bite.",
         "scene":"blank_white",
-        "flip_emote" : 1,
         "guest":{
           "order":0,
           "character":"av",
-          "emote":"test"
+          "emote":"holding_cup"
+        }
+    },
+    {
+        "character":"av",
+        "emote":"test",
+        "speak":"...",
+        "scene":"blank_white",
+        "guest":{
+          "order":1,
+          "character":"nv",
+          "emote":"coffee"
         }
     }
 ]
