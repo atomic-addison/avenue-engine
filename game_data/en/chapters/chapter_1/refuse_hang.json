@@ -14,33 +14,13 @@
     {
         "character":"nv",
         "emote":"phone_speaking",
-        "speak":"Thats alright! Take care!",
+        "speak":"Oh, thats alright! Take care!",
         "scene":"street_split",
         "guest":{
           "order":0,
           "character":"av",
           "emote":"phone_sweating_idle"
-        }
-    },
-    {
-        "character":"av",
-        "speak":"*beep*",
-        "name_override":"Phone",
-        "scene":"street_closed",
-        "emote":"dial_sweating"
-    },
-    {
-        "character":"av",
-        "speak":"phew...",
-        "name_override":"Phone",
-        "scene":"street_closed",
-        "emote":"exhale_phone"
-    },
-    {
-        "character":"av",
-        "speak":"...",
-        "name_override":"Phone",
-        "scene":"street_closed",
-        "emote":"phone_pocket"
+        },
+        "next": "hang_up"
     }
 ]

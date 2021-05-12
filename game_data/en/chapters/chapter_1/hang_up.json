@@ -9,15 +9,19 @@
     {
         "character":"av",
         "speak":"phew...",
-        "name_override":"Phone",
         "scene":"street_closed",
         "emote":"exhale_phone"
     },
     {
         "character":"av",
         "speak":"...",
-        "name_override":"Phone",
         "scene":"street_closed",
         "emote":"phone_pocket"
+    },
+    {
+        "character":"av",
+        "speak":"Man, why can't I act like a normal person?",
+        "scene":"blank_white",
+        "emote":"test"
     }
 ]
