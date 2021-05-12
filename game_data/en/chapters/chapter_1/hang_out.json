@@ -130,6 +130,10 @@
         "emote":"panicked_blurry",
         "speak":"Its kinda rude to- AAAAH!",
         "scene":"street_blurry",
+        "effect": {
+           "name":"shake",
+           "duration":0.3
+        },
         "guest":{
           "order":1,
           "character":"ns",

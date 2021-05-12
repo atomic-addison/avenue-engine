@@ -287,10 +287,27 @@ class character{
 			var emoteURL = path.join(__dirname, 'assets', 'characters', this.dirname, this.pseudonym+'_'+args.emote+'.png');
 
 			if (!imageCached(emoteURL)) emoteURL = path.join(__dirname, 'assets', 'img', 'dummy.png');
-		
+
+			var effect_style = '';
+
+			if (args.effect) {
+				effect_style += `animation:${args.effect.name} ${args.effect.duration?args.effect.duration+'s':''} ${args.effect.count?args.effect.count:''};`;
+			}
+
+			//animation: shake 0.3s;
+
 			$(".character").show();
 			$(".character").append(`
-				<div class="charimagewrapper ${args.flip_emote?'flipped':''}">
+				<div 
+					class="
+						charimagewrapper
+						${args.flip_emote?'flipped':''}
+					"
+					style="
+					 	${effect_style} 
+					"
+				>
+					
 					<img src="${emoteURL}">
 				</div>
 			`);
