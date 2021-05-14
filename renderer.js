@@ -55,7 +55,6 @@ function imageCached(image) {
 	for (var i = 0; i < window.imageList.length; i++) {
 		if (path.normalize(window.imageList[i]) == path.normalize(image)) return true;
 	}
-
 	return false;
 }
 
@@ -138,7 +137,6 @@ class gameManager{
 	            ctx.imageSmoothingEnabled = true;
 
 	            drawImageProp(ctx, canvas, 0, 0, resizeTo.width, resizeTo.height);
-
 			    gameSave.imgdata = extra_canvas.toDataURL("image/png");
 			}
 			//OTHERWISE USE ORIGINAL IMAGE
@@ -177,7 +175,7 @@ class gameManager{
 
 			this.act(tempActions);
 
-			if (callback) callback();
+			if (callback && typeof callback === 'function') callback();
 		});
 	}
 	restart(){
@@ -249,7 +247,7 @@ class character{
 		if (this.dialogue && this.dialogue.running && !this.dialogue.unskippable) {
 			clearInterval(this.dialogue.interval);
 			$(".speech").append(this.dialogue.text.join(''));
-			if (this.dialogue.callback) this.dialogue.callback();
+			if (this.dialogue.callback && typeof this.dialogue.callback === 'function') this.dialogue.callback();
 			this.diagComplete = true;
 			this.dialogue = null;
 		}
@@ -269,50 +267,42 @@ class character{
 			if (!imageCached(emoteURL)) emoteURL = path.join(__dirname, 'assets/img/dummy.png');
 
 			var effect_style = '';
-
-			if (args.effect) {
-				effect_style += `animation:${args.effect.name} ${args.effect.duration?args.effect.duration+'s':''} ${args.effect.count?args.effect.count:''};`;
-			}
+			if (args.effect) effect_style += `animation:${args.effect.name} ${args.effect.duration?args.effect.duration+'s':''} ${args.effect.count?args.effect.count:''};`;
 
 			$(".character").append(`
 				<div 
-					class="
-						charimagewrapper
-						${args.flip_emote?'flipped':''}
-					"
+					class="charimagewrapper ${args.flip_emote?'flipped':''}"
 					style="${effect_style}"
 				>
-					
 					<img src="${emoteURL}">
 				</div>
 			`).show();
 		}
-
-		$(".background").append(`<img src="${path.join(__dirname, 'assets/scenes', args.scene)}.png">`);
-
+		//IF SCENE BACKGROUND IS DEFINED, APPEND IT TO THE SCENE
+		if(args.scene) $(".background").append(`<img src="${path.join(__dirname, 'assets/scenes', args.scene)}.png">`);
+		//IF NAME ISNT HIDDEN, IS DEFINED, OR AN OVERRIDE IS SPECIFIED, ADD THE NAME
 		if (this.name && !args.hideName || args.name_override) {
 			if (args.name_override) $(".name").append(args.name_override);
 			else $(".name").append(this.name);
-			
 			$(".name").show();
 		}
-
+		//IF THE SCENE HAS A GUIEST CHARACTER, ADD IT
 		if (args.guest) {
-			//THIS WILL NOT VALIDATE IF YOU HAVE AN UNDEFINED GUEST, BUT WHY WOULD YOU ANYWAY
+			//GET GUEST CHARACTER'S SPRITE
 			var guestEmoteURL = path.join(__dirname, 'assets/characters', this.guest(args.guest).dirname, this.guest(args.guest).pseudonym+'_'+args.guest.emote+'.png');
-
+			//IF NO SPRITE IS FOUND IN CACHE, USE FALLBACK
 			if (!imageCached(guestEmoteURL)) guestEmoteURL = path.join(__dirname, 'assets/img/dummy.png');
-
+			//PREPARE THE CODE TO ADD TO THE SCENE
 			var dataToAppend = `
 				<div class="charimagewrapper ${args.guest.flip_emote?'flipped':''}">
 					<img src="${guestEmoteURL}">
 				</div>
 			`;
-
-			if (args.guest.order == 1) $(".character").append(dataToAppend);
+			//DEPENDING ON ORDER SPECIFIED, APPEND OR PREPEND THE GUEST TO THE SCENE
+			if (args.guest.order > 0) $(".character").append(dataToAppend);
 			else $(".character").prepend(dataToAppend);
 		}
-
+		//UNBIND THE OLD SCENE CODE
 		$(".event_manager").unbind();
 		$(document).unbind("keyup_next");
 
@@ -389,26 +379,19 @@ class charList{
 //PROMPT CONTROLLER
 class customPrompt{
 	constructor(args){
-		this.args = args;
-
 		$(".confirm_page").find(".confirm_prompt").empty().append(args.text);
 		$(".confirm_page").find(".confirm_choices").empty();
 		$(".confirm_page").find(".toggle_page").click(function(){ args.callback(args.default); });
-
 		for (var i = 0; i < args.options.length; i++) {
 			(function(i){
 				var $btn = $("<button>", { type: 'button', text: args.options[i].text});
-
 				$btn.click(() => {
-					args.callback(args.options[i].value);
-
+					if(args.callback && typeof args.callback === 'function') args.callback(args.options[i].value);
 					if (!args.chain) $(".confirm_page").hide();
 				});
-
 				$(".confirm_page").find(".confirm_choices").append($btn);
 			})(i);
 		}
-
 		this.prompt();
 	}
 	prompt(){ $(".confirm_page").show(); }
@@ -561,20 +544,25 @@ $(document).on("langload", function(){
 		window.appSettings.locale = $(".set_lang_button.selected").data("lang");
                 
 		var data = JSON.stringify(window.appSettings);
-		fs.writeFileSync(path.join(window.home_dir, '/settings.json'), data);
-		
-		var dictData = fs.readFileSync(path.join(__dirname, '/game_data/' + window.appSettings.locale + '/data/dict.json'));
-		window.lang_dict = JSON.parse(dictData);
 
-		window.populateLangs(window.lang_dict);
-
-		//game language reset?
-		if (window.game) {
-			if(window.game.currentChar && window.game.currentChar.dialogue) clearInterval(window.game.currentChar.dialogue.interval);
-			var tempActions = requireUncached(path.join(__dirname, `/game_data/${window.appSettings.locale}/chapters/${window.game.chapter}/${window.game.actionSet}.json`));	
-			for(var i = 0; i < window.game.iterator-1; i++) tempActions.shift();
-			window.game.act(tempActions);
-		}
+		fs.writeFile(path.join(window.home_dir, '/settings.json'), data, function (err) {
+		  	if (err) return console.log(err);
+		  	console.log("Saved settings!");
+		  	//add a change dict check so you dont have to reload the dict every time
+		  	fs.readFile(path.join(__dirname, '/game_data/' + window.appSettings.locale + '/data/dict.json'), 'utf8', function (err, dictData) {
+			  	if (err) return console.log(err);
+			  	console.log("Loaded new dictionary");
+				window.lang_dict = JSON.parse(dictData);
+				window.populateLangs(window.lang_dict);
+				//game language reset?
+				if (window.game) {
+					if(window.game.currentChar && window.game.currentChar.dialogue) clearInterval(window.game.currentChar.dialogue.interval);
+					var tempActions = requireUncached(path.join(__dirname, `/game_data/${window.appSettings.locale}/chapters/${window.game.chapter}/${window.game.actionSet}.json`));	
+					for(var i = 0; i < window.game.iterator-1; i++) tempActions.shift();
+					window.game.act(tempActions);
+				}
+			});
+		});
 	});
 
 	$(".pause_quit").click(function(e){
