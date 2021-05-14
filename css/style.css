@@ -410,8 +410,8 @@ p {
         color: #fff;
         background-color: #000;
         border-color: #fff; }
-    .settings_menu .settings_menu_inner .settings_locale .locale_buttons.selected {
-      text-decoration: underline; }
+      .settings_menu .settings_menu_inner .settings_locale .locale_buttons button.selected {
+        text-decoration: underline; }
     .settings_menu .settings_menu_inner .settings_save_container {
       display: flex;
       justify-content: center;

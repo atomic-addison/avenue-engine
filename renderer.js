@@ -540,21 +540,26 @@ $(document).on("langload", function(){
 		$(this).addClass("selected");
 	});
 
-	$(".settings_save").click(function(){
+	$(".settings_save").click(function(){ 
+		//CHECK IF USER CHANGED LANGUAGE IN THE SETTINGS
+		var localeChanged = $(".set_lang_button.selected").data("lang") != window.appSettings.locale;
+		//SAVE THE CHOSEN LANGUAGE TO LOADED SETTINGS
 		window.appSettings.locale = $(".set_lang_button.selected").data("lang");
-                
+        //TURN LOADED SETTINGS OBJECT INTO STRING FOR WRITING
 		var data = JSON.stringify(window.appSettings);
-
+		//WRITE THE SETTINGS TO THE SETTINGS FILE
 		fs.writeFile(path.join(window.home_dir, '/settings.json'), data, function (err) {
 		  	if (err) return console.log(err);
-		  	console.log("Saved settings!");
-		  	//add a change dict check so you dont have to reload the dict every time
+		  	//IF THE LOCALE WASN'T CHANGED, STOP
+		  	if (!localeChanged) return;
+		  	//IF THE LOCALE WAS CHANGED, RELOAD TO NEW LOCALE
 		  	fs.readFile(path.join(__dirname, '/game_data/' + window.appSettings.locale + '/data/dict.json'), 'utf8', function (err, dictData) {
 			  	if (err) return console.log(err);
-			  	console.log("Loaded new dictionary");
+			  	//SAVE LOADED DICTIONARY TO WINDOW
 				window.lang_dict = JSON.parse(dictData);
+				//CHANGE ALL WORDS TO THE NEW LOCALE
 				window.populateLangs(window.lang_dict);
-				//game language reset?
+				//RELOAD THE GAME'S LANGUAGE IN THE SAME SPOT
 				if (window.game) {
 					if(window.game.currentChar && window.game.currentChar.dialogue) clearInterval(window.game.currentChar.dialogue.interval);
 					var tempActions = requireUncached(path.join(__dirname, `/game_data/${window.appSettings.locale}/chapters/${window.game.chapter}/${window.game.actionSet}.json`));	
