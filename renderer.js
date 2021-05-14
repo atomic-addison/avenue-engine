@@ -128,13 +128,9 @@ class gameManager{
 		};
 
 		html2canvas($(".game_contents")[0]).then(function(canvas) {
-			//compress image here
+			//COMPRESS IMAGE IF ENABLED IN THE SETTINGS
 			if (window.identity.compress_previews) {
-				var resizeTo = {
-					width: 144,
-					height: 94
-				};
-
+				var resizeTo = { width: 144, height: 94 };
 	            var extra_canvas = document.createElement("canvas");
 	            extra_canvas.setAttribute('width',resizeTo.width);
 	            extra_canvas.setAttribute('height',resizeTo.height);
@@ -145,13 +141,11 @@ class gameManager{
 
 			    gameSave.imgdata = extra_canvas.toDataURL("image/png");
 			}
-			else {
-				gameSave.imgdata = canvas.toDataURL("image/png");
-			}
+			//OTHERWISE USE ORIGINAL IMAGE
+			else gameSave.imgdata = canvas.toDataURL("image/png");
 		 
 			var data = JSON.stringify(gameSave, null, 2);
-
-			fs.writeFile(path.join(path.join(window.home_dir, '/saves/'), '/slot_' + pos + '.json'), data, (err) => {
+			fs.writeFile(path.join(window.home_dir, `/saves/slot_${pos}.json`), data, (err) => {
 				if (err) throw err;
 				if (callback) callback();
 			});
@@ -165,7 +159,7 @@ class gameManager{
 		this.paused = false;
 		$(".game_contents").show();
 
-		fs.readFile(path.join(path.join(window.home_dir, '/saves/'), '/slot_' + pos + '.json'), (err, data) => {
+		fs.readFile(path.join(window.home_dir, `/saves/slot_${pos}.json`), (err, data) => {
 			if (err) console.log(err);
 
 			if(window.game.currentChar && window.game.currentChar.dialogue) clearInterval(window.game.currentChar.dialogue.interval);
@@ -227,11 +221,7 @@ class gameManager{
 //CHARACTER INSTANCE
 class character{
 	constructor(args){
-		if(Object.keys(args).length) {
-			Object.keys(args).forEach(key => {
-				this[key] = args[key];
-			});
-		}
+		if(Object.keys(args).length) Object.keys(args).forEach(key => { this[key] = args[key]; });
 
 		this.dialogue;
 		this.diagComplete = true;
@@ -239,23 +229,18 @@ class character{
 	typeOut(string, unskippable, callback, length = 25){
 		this.diagComplete = false;
 		this.dialogue = {};
-
 		this.dialogue.text = string.split('');
 		this.dialogue.callback = callback;
 		this.dialogue.unskippable = unskippable;
 		this.dialogue.interval = setInterval(() => {
 			if (window.game.paused || !this.dialogue) return;
-
 			this.dialogue.running = true;
-
 			$(".speech").append(this.dialogue.text[0]);
 			this.dialogue.text.shift();
-
 			if (this.dialogue.text.length<=0) {
 				clearInterval(this.dialogue.interval);
 				this.diagComplete = true;
-				if (this.dialogue.callback) this.dialogue.callback();
-
+				if (this.dialogue.callback && typeof this.dialogue.callback === 'function') this.dialogue.callback();
 				this.dialogue = null;
 			}
 		}, length);
@@ -269,24 +254,19 @@ class character{
 			this.dialogue = null;
 		}
 	}
-	guest(guest){
-		return charlist.findChar(guest.character);
-	}
+	guest(guest){ return charlist.findChar(guest.character); }
 	do(args, callback, guest = null){
 		$(".speech").empty();
 		$(".speech_box").hide();
-		$(".name").empty();
-		$(".name").hide();
-		$(".character").empty();
-		$(".character").hide();
-		$(".choice_area").empty();
+		$(".name").empty().hide();
+		$(".character").empty().hide();
 		$(".background").empty();
-		$(".choice_area").addClass("inactive");
+		$(".choice_area").empty().addClass("inactive");
 
 		if (args.emote) {
-			var emoteURL = path.join(__dirname, 'assets', 'characters', this.dirname, this.pseudonym+'_'+args.emote+'.png');
+			var emoteURL = path.join(__dirname, 'assets/characters', this.dirname, this.pseudonym+'_'+args.emote+'.png');
 
-			if (!imageCached(emoteURL)) emoteURL = path.join(__dirname, 'assets', 'img', 'dummy.png');
+			if (!imageCached(emoteURL)) emoteURL = path.join(__dirname, 'assets/img/dummy.png');
 
 			var effect_style = '';
 
@@ -294,28 +274,21 @@ class character{
 				effect_style += `animation:${args.effect.name} ${args.effect.duration?args.effect.duration+'s':''} ${args.effect.count?args.effect.count:''};`;
 			}
 
-			//animation: shake 0.3s;
-
-			$(".character").show();
 			$(".character").append(`
 				<div 
 					class="
 						charimagewrapper
 						${args.flip_emote?'flipped':''}
 					"
-					style="
-					 	${effect_style} 
-					"
+					style="${effect_style}"
 				>
 					
 					<img src="${emoteURL}">
 				</div>
-			`);
+			`).show();
 		}
 
-		$(".background").append(`
-			<img src="${path.join(__dirname, 'assets', 'scenes', args.scene+'.png')}">
-		`);
+		$(".background").append(`<img src="${path.join(__dirname, 'assets/scenes', args.scene)}.png">`);
 
 		if (this.name && !args.hideName || args.name_override) {
 			if (args.name_override) $(".name").append(args.name_override);
@@ -326,9 +299,9 @@ class character{
 
 		if (args.guest) {
 			//THIS WILL NOT VALIDATE IF YOU HAVE AN UNDEFINED GUEST, BUT WHY WOULD YOU ANYWAY
-			var guestEmoteURL = path.join(__dirname, 'assets', 'characters', this.guest(args.guest).dirname, this.guest(args.guest).pseudonym+'_'+args.guest.emote+'.png');
+			var guestEmoteURL = path.join(__dirname, 'assets/characters', this.guest(args.guest).dirname, this.guest(args.guest).pseudonym+'_'+args.guest.emote+'.png');
 
-			if (!imageCached(guestEmoteURL)) guestEmoteURL = path.join(__dirname, 'assets', 'img', 'dummy.png');
+			if (!imageCached(guestEmoteURL)) guestEmoteURL = path.join(__dirname, 'assets/img/dummy.png');
 
 			var dataToAppend = `
 				<div class="charimagewrapper ${args.guest.flip_emote?'flipped':''}">
@@ -366,7 +339,7 @@ class character{
 								window.game.act(window.game.actions);
 							}
 							else{
-								if(callback) callback();
+								if(callback && typeof callback === 'function') callback();
 							}
 						});
 					})(i);
@@ -374,7 +347,7 @@ class character{
 				$(".choice_area").removeClass("inactive");
 			}
 			else { 
-				if(callback) {
+				if(callback && typeof callback === 'function') {
 					$(".event_manager").on("click", callback);
 					//gohere
 
@@ -388,7 +361,7 @@ class character{
 		if (!args.speak) {
 			if(args.wait){
 				setTimeout(function(){
-					if(callback) callback();
+					if(callback && typeof callback === 'function') callback();
 				}, args.wait);
 			}
 			else getChoices();
@@ -419,12 +392,8 @@ class customPrompt{
 		this.args = args;
 
 		$(".confirm_page").find(".confirm_prompt").empty().append(args.text);
-
 		$(".confirm_page").find(".confirm_choices").empty();
-
-		$(".confirm_page").find(".toggle_page").click(function(){
-			args.callback(args.default);
-		});
+		$(".confirm_page").find(".toggle_page").click(function(){ args.callback(args.default); });
 
 		for (var i = 0; i < args.options.length; i++) {
 			(function(i){
@@ -440,21 +409,19 @@ class customPrompt{
 			})(i);
 		}
 
-		this.showPrompt();
+		this.prompt();
 	}
-	showPrompt(){
-		$(".confirm_page").show();
-	}
+	prompt(){ $(".confirm_page").show(); }
+	dismiss(){ $(".confirm_page").hide(); }
 }
 //SAVE MANAGER
 class saveManager{
 	constructor(args = {}){
+		//INITIALIZE SAVES DIRECTORY
 		this.saveDir = args.saveDir || path.join(window.home_dir, '/saves/');
-
 		//GENERATE SAVES
 		this.genSaves();
 	}
-
 	parseSaves(){
 		//READ THE SAVES DIRECTORY
 		fs.readdir(this.saveDir, (err, files) => {
@@ -479,12 +446,14 @@ class saveManager{
 					if (window.game) window.game.loadState($(e.target).data("loadnum"));
 					//IF NOT, START THE GAME WITH THE RIGHT CHAPTER AND LOAD STATE
 					else {
+						//INITIALIZE GAME WITH THE RIGHT CHAPTER
 						startGameFromChapter($(e.target).data("chapter"));
+						//LOAD THE SAVE STATE
 						window.game.loadState($(e.target).data("loadnum"));
 					}
 				});
 			});
-
+			//GENERATE SAVE BUTTONS
 			for (var i = 0; i < $(".imm_inner").find('.i_slot').length; i++) {
 				$(`.smm_slot_` + i).append(`<button class="act_save act_s_${i}" data-savenum="${i}"><span>${window.lang_dict.slot}</span> ${i}</button>`);
 
@@ -493,14 +462,8 @@ class saveManager{
 						new customPrompt({
 							text: window.lang_dict.overwrite_confirm,
 							options: [
-								{
-									"text" : window.lang_dict.sure,
-									"value" : true
-								},
-								{
-									"text" : window.lang_dict.nope,
-									"value" : false
-								}
+								{ "text" : window.lang_dict.sure, "value" : true },
+								{ "text" : window.lang_dict.nope, "value" : false }
 							],
 							default: false,
 							callback: (e) => {
@@ -525,7 +488,6 @@ class saveManager{
 			}
 		});
 	}
-
 	genSaves(){
 		//CHECK IF SAVES DIR EXISTS
 		fs.access(this.saveDir, error => {
@@ -533,7 +495,6 @@ class saveManager{
 		    	//CREATE SAVES DIR IF NOT EXISTS
 		        fs.mkdir(this.saveDir, (err) => {
 				    if (err) throw err;
-
 				    this.parseSaves();
 				});
 		    }
@@ -565,7 +526,6 @@ $(document).on("langload", function(){
 	
 	$(".main_play").click(function(e){
 		e.stopPropagation();
-
 		if (window.chapterList.length < 2 && window.identity.skip_single_chapter) {
 			//should this get the data value instead of simulating a click?
 			$(".chapter_inner").find('button').first().click();
@@ -617,19 +577,12 @@ $(document).on("langload", function(){
 		window.game.act(tempActions);
 	});
 
-	$(".main_quit").click(function(e){
+	$(".pause_quit").click(function(e){
 		e.stopPropagation();
-
-		new customPrompt({
+		var quitPrompt = new customPrompt({
 			options: [
-				{
-					"text" : window.lang_dict.quit_main,
-					"value" : false
-				},
-				{
-					"text" : window.lang_dict.quit_desktop,
-					"value" : true
-				}
+				{ "text" : window.lang_dict.quit_main, "value" : false },
+				{ "text" : window.lang_dict.quit_desktop, "value" : true }
 			],
 			chain: true,
 			default: false,
@@ -638,82 +591,77 @@ $(document).on("langload", function(){
 					new customPrompt({
 						text: window.lang_dict.quit_confirm,
 						options: [
-							{
-								"text" : window.lang_dict.sure,
-								"value" : true
-							},
-							{
-								"text" : window.lang_dict.nope,
-								"value" : false
-							}
+							{ "text" : window.lang_dict.sure, "value" : true },
+							{ "text" : window.lang_dict.nope, "value" : false }
 						],
 						default: false,
-						callback: (e) => {
-							if (e) remote.getCurrentWindow().close();
-						}
+						callback: (e) => { if (e) remote.getCurrentWindow().close(); }
 					});
 				}
 				else {
-
+					this.paused = false;
+					$(".game_contents").hide();
+					$('.main_menu').show();
+					quitPrompt.dismiss();
 				}
 			}
 		});
+	});
 
+	$(".main_quit").click(function(e){
+		e.stopPropagation();
+		new customPrompt({
+			text: window.lang_dict.quit_confirm,
+			options: [
+				{ "text" : window.lang_dict.sure, "value" : true },
+				{ "text" : window.lang_dict.nope, "value" : false }
+			],
+			default: false,
+			callback: (e) => { if (e) remote.getCurrentWindow().close(); }
+		});
 	});
 
 	$(".main_restart").click(function(e){
 		e.stopPropagation();
-
 		window.game.restart();
 	});
 
 	$(document).click(function(){
-		if(window.game && !window.game.paused){
-			window.game.currentChar.skipDialogue();
-		}
+		if(window.game && !window.game.paused) window.game.currentChar.skipDialogue();
 	});
 
 	$(document).bind("keyup", function(e){
-		$(document).trigger("keyup_skip", [e]);
-		$(document).trigger("keyup_next", [e]);
+		$(document).trigger("keyup_skip", [e]).trigger("keyup_next", [e]);
 	});
 
 	$(document).bind("keyup_skip", function(e, event){
 		if (keyEditMode) {
 			$("#pick_key").html(window.lang_dict.keyNames[event.keyCode]);
-
             window.appSettings.skip = event.keyCode;
-
             setTimeout(() => {
 				keyEditMode = false;
 				return;
             }, 100);
 		}
+
 		if(event.keyCode == (window.appSettings.skip || 32) && !window.game.paused && window.game.currentChar){
 			if (!charlist.findChar(window.game.currentChar.pseudonym).diagComplete) {
 				window.okToNext = false;
 				window.game.currentChar.skipDialogue();
 			}
-			else{
-				window.okToNext = true;
-			}
+			else window.okToNext = true;
 		}
 	});
 
-	$(".toggle_page").click(function(){
-		$(this).parent(".page").hide();
-	});
+	$(".toggle_page").click(function(){ $(this).parent(".page").hide(); });
 
-	$(".open_page").click(function(){
-		$("." + $(this).data("page")).show();
-	});
+	$(".open_page").click(function(){ $("." + $(this).data("page")).show(); });
 
 	$(".ignore").click(function(e){ e.stopPropagation(); });
 
 	$('a').click(function(e){
 		if ($(this).attr("href") && $(this).attr("href").startsWith("http")) {
 			e.preventDefault();
-
 			open($(this).attr("href"));
 		}
 	});
