@@ -247,8 +247,8 @@ class character{
 		if (this.dialogue && this.dialogue.running && !this.dialogue.unskippable) {
 			clearInterval(this.dialogue.interval);
 			$(".speech").append(this.dialogue.text.join(''));
-			if (this.dialogue.callback && typeof this.dialogue.callback === 'function') this.dialogue.callback();
 			this.diagComplete = true;
+			if (this.dialogue.callback && typeof this.dialogue.callback === 'function') this.dialogue.callback();
 			this.dialogue = null;
 		}
 	}
@@ -452,9 +452,8 @@ class saveManager{
 							callback: (e) => {
 								if (e) {
 									window.game.saveState($(e.target).data("savenum"), () => {
-										this.genSaves(path.join(window.home_dir, '/saves/'));
-
 										$(".save_menu").hide();
+										this.genSaves(path.join(window.home_dir, '/saves/'));
 									});
 								}
 							}
@@ -462,9 +461,8 @@ class saveManager{
 					}
 					else{
 						window.game.saveState($(e.target).data("savenum"), () => {
-							this.genSaves(path.join(window.home_dir, '/saves/'));
-
 							$(".save_menu").hide();
+							this.genSaves(path.join(window.home_dir, '/saves/'));
 						});
 					}
 				});
