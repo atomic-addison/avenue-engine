@@ -567,14 +567,14 @@ $(document).on("langload", function(){
 		window.lang_dict = JSON.parse(dictData);
 
 		window.populateLangs(window.lang_dict);
-		
-		if(window.game.currentChar && window.game.currentChar.dialogue) clearInterval(window.game.currentChar.dialogue.interval);
 
-		var tempActions = requireUncached(path.join(__dirname, `/game_data/${window.appSettings.locale}/chapters/${window.game.chapter}/${window.game.actionSet}.json`));
-				
-		for(var i = 0; i < window.game.iterator-1; i++) tempActions.shift();
-
-		window.game.act(tempActions);
+		//game language reset?
+		if (window.game) {
+			if(window.game.currentChar && window.game.currentChar.dialogue) clearInterval(window.game.currentChar.dialogue.interval);
+			var tempActions = requireUncached(path.join(__dirname, `/game_data/${window.appSettings.locale}/chapters/${window.game.chapter}/${window.game.actionSet}.json`));	
+			for(var i = 0; i < window.game.iterator-1; i++) tempActions.shift();
+			window.game.act(tempActions);
+		}
 	});
 
 	$(".pause_quit").click(function(e){
@@ -638,10 +638,7 @@ $(document).on("langload", function(){
 		if (keyEditMode) {
 			$("#pick_key").html(window.lang_dict.keyNames[event.keyCode]);
             window.appSettings.skip = event.keyCode;
-            setTimeout(() => {
-				keyEditMode = false;
-				return;
-            }, 100);
+            return setTimeout(() => { keyEditMode = false; }, 100);
 		}
 
 		if(event.keyCode == (window.appSettings.skip || 32) && !window.game.paused && window.game.currentChar){
