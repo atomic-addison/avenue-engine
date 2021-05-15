@@ -365,7 +365,7 @@
         "character":"nv",
         "emote":"coffee_speak",
         "speak":"Come on, give it a sip, it doesn't bite.",
-        "scene":"blank_white",
+        "scene":"street_coffee",
         "guest":{
           "order":0,
           "character":"av",
@@ -374,13 +374,99 @@
     },
     {
         "character":"av",
-        "emote":"test",
+        "emote":"sip",
         "speak":"...",
-        "scene":"blank_white",
+        "scene":"street_coffee",
         "guest":{
           "order":1,
           "character":"nv",
           "emote":"coffee"
         }
+    },
+    {
+        "character":"av",
+        "emote":"enjoy_cup",
+        "speak":"Mmmm...",
+        "scene":"street_coffee",
+        "guest":{
+          "order":1,
+          "character":"nv",
+          "emote":"coffee"
+        }
+    },
+    {
+        "character":"av",
+        "emote":"speak_cup",
+        "speak":"Its very good! Thanks, Nav.",
+        "scene":"street_coffee",
+        "guest":{
+          "order":1,
+          "character":"nv",
+          "emote":"coffee"
+        }
+    },
+    {
+        "character":"nv",
+        "emote":"coffee_speak",
+        "speak":"See, I told you! This place is great!",
+        "scene":"street_coffee",
+        "guest":{
+          "order":0,
+          "character":"av",
+          "emote":"holding_cup"
+        }
+    },
+    {
+        "character":"nv",
+        "emote":"coffee_sip",
+        "scene":"street_coffee",
+        "speak":"...",
+        "guest":{
+          "order":0,
+          "character":"av",
+          "emote":"sad_cup"
+        }
+    },
+    {
+        "character":"nv",
+        "emote":"coffee_confused",
+        "speak": "Is everything alright, Ave? You look all shook today...",
+        "scene":"street_coffee",
+        "guest":{
+          "order":0,
+          "character":"av",
+          "emote":"sad_cup"
+        }
+    },
+    {
+        "character":"av",
+        "emote":"tense_speak_cup",
+        "speak":"Oh, uuh...",
+        "scene":"street_coffee",
+        "guest":{
+          "order":1,
+          "character":"nv",
+          "emote":"coffee_confused"
+        },
+        "choices":[
+             {
+                "option":"I see ghosts",
+                 "sysvar":[
+                    {
+                       "name":"confess",
+                       "value":true
+                    }
+                 ]
+             },
+             {
+                "option":"I'm just tired",
+                 "sysvar":[
+                    {
+                       "name":"confess",
+                       "value":false
+                    }
+                 ]
+             }
+        ]
     }
 ]

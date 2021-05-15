@@ -104,5 +104,7 @@ dist
 .tern-port
 
 # Ew, MacOS
-
 .DS_store
+
+# Service files
+run.sh
