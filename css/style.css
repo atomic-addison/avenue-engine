@@ -75,6 +75,8 @@ p {
           left: 50%;
           transform: translate(-50%, -50%);
           z-index: 2; }
+          .page .inner_menu_menu .imm_inner .i_slot button > * {
+            pointer-events: none; }
           .page .inner_menu_menu .imm_inner .i_slot button:hover {
             color: #fff;
             background-color: #000;

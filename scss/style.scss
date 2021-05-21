@@ -91,6 +91,10 @@ p {
 					transform: translate(-50%, -50%);
 					z-index: 2;
 
+					&>* {
+						pointer-events: none;
+					}
+
 					&:hover {
 						color: #fff;
 						background-color: #000;

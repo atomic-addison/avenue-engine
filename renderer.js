@@ -118,8 +118,6 @@ class gameManager{
 		});
 	}
 	saveState(pos, callback){
-		console.log("saving game");
-
 		var gameSave = { 
 			actionSet: this.actionSet,
 			chapter: this.chapter,
@@ -160,7 +158,7 @@ class gameManager{
 		$(".game_contents").show();
 
 		fs.readFile(path.join(window.home_dir, `/saves/slot_${pos}.json`), (err, data) => {
-			if (err) console.log(err);
+			if (err) return console.log(err);
 
 			if(window.game.currentChar && window.game.currentChar.dialogue) clearInterval(window.game.currentChar.dialogue.interval);
 
@@ -443,10 +441,7 @@ class saveManager{
 				$(`.smm_slot_` + i).append(`<button class="act_save act_s_${i}" data-savenum="${i}"><span>${window.lang_dict.slot}</span> ${i}</button>`);
 
 				$(`.act_save.act_s_` + i).click((e) => {
-					console.log("save clicked");
-
 					if ($(e.target).siblings('img').length) {
-						console.log("save has image");
 						new customPrompt({
 							text: window.lang_dict.overwrite_confirm,
 							options: [
@@ -454,21 +449,20 @@ class saveManager{
 								{ "text" : window.lang_dict.nope, "value" : false }
 							],
 							default: false,
-							callback: (e) => {
-								if (e) {
+							callback: (pt_e) => {
+								if (pt_e) {
 									window.game.saveState($(e.target).data("savenum"), () => {
 										$(".save_menu").hide();
-										this.genSaves(path.join(window.home_dir, '/saves/'));
+										this.genSaves();
 									});
 								}
 							}
 						});
 					}
 					else{
-						console.log("save has no image");
 						window.game.saveState($(e.target).data("savenum"), () => {
 							$(".save_menu").hide();
-							this.genSaves(path.join(window.home_dir, '/saves/'));
+							this.genSaves();
 						});
 					}
 				});
