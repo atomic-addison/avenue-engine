@@ -655,6 +655,11 @@ $(document).on("langload", function(){
 			$(this).text("Press any key");
 			keyEditMode = true;
 		}
+		else {
+			if(window.appSettings.skip) $("#pick_key").text(window.lang_dict.keyNames[window.appSettings.skip]);
+            else $("#pick_key").text(window.lang_dict.keyNames[32]);
+			keyEditMode = false;
+		}
 	});
 });
 
