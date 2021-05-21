@@ -456,7 +456,8 @@
                        "name":"confess",
                        "value":true
                     }
-                 ]
+                 ],
+                 "next":"i_see_ghosts"
              },
              {
                 "option":"I'm just tired",
@@ -465,7 +466,8 @@
                        "name":"confess",
                        "value":false
                     }
-                 ]
+                 ],
+                 "next":"im_just_tired"
              }
         ]
     }

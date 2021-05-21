@@ -118,6 +118,8 @@ class gameManager{
 		});
 	}
 	saveState(pos, callback){
+		console.log("saving game");
+
 		var gameSave = { 
 			actionSet: this.actionSet,
 			chapter: this.chapter,
@@ -145,7 +147,7 @@ class gameManager{
 			var data = JSON.stringify(gameSave, null, 2);
 			fs.writeFile(path.join(window.home_dir, `/saves/slot_${pos}.json`), data, (err) => {
 				if (err) throw err;
-				if (callback) callback();
+				if (callback && typeof callback === 'function') callback();
 			});
 		});
 	}
@@ -441,7 +443,10 @@ class saveManager{
 				$(`.smm_slot_` + i).append(`<button class="act_save act_s_${i}" data-savenum="${i}"><span>${window.lang_dict.slot}</span> ${i}</button>`);
 
 				$(`.act_save.act_s_` + i).click((e) => {
-					if ($(this).siblings('img').length) {
+					console.log("save clicked");
+
+					if ($(e.target).siblings('img').length) {
+						console.log("save has image");
 						new customPrompt({
 							text: window.lang_dict.overwrite_confirm,
 							options: [
@@ -460,6 +465,7 @@ class saveManager{
 						});
 					}
 					else{
+						console.log("save has no image");
 						window.game.saveState($(e.target).data("savenum"), () => {
 							$(".save_menu").hide();
 							this.genSaves(path.join(window.home_dir, '/saves/'));
