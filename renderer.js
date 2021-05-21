@@ -507,18 +507,13 @@ $(document).on("langload", function(){
 	
 	$(".main_play").click(function(e){
 		e.stopPropagation();
-		if (window.chapterList.length < 2 && window.identity.skip_single_chapter) {
-			//should this get the data value instead of simulating a click?
-			$(".chapter_inner").find('button').first().click();
-			return;
-		}
-
-		$(".ep_menu").show();
+		//IF SKIP CHAPTER IS ENABLED, START THE FIRST AVAILABLE CHAPTER
+		if (window.chapterList.length < 2 && window.identity.skip_single_chapter) startGameFromChapter($(".chapter_inner").find('button').data("chid"));
+		//OTHERWISE SHOW CHAPTER SELECTION
+		else $(".ep_menu").show();
 	});
 
-	$(".chapter_select").click(function() {
-		startGameFromChapter($(this).data("chid"));
-	});
+	$(".chapter_select").click(function() { startGameFromChapter($(this).data("chid")); });
 
 	$(".toggle_pause_js").click(function(e){
 		e.stopPropagation();
