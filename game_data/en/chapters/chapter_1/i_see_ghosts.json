@@ -1,7 +1,101 @@
 [    
    {
-      "character":"sh",
-      "speak":"...",
-      "scene":"blank_white"
-   }
+        "character":"av",
+        "emote":"sad_cup",
+        "speak": "...",
+        "scene":"street_coffee",
+        "guest":{
+          "order":1,
+          "character":"nv",
+          "emote":"coffee_confused2"
+ }
+},
+   {
+        "character":"av",
+        "emote":"tense_speak_cup",
+        "speak": "I uhh... well how do I put this...",
+        "scene":"street_coffee",
+        "guest":{
+          "order":1,
+          "character":"nv",
+          "emote":"coffee_sip"
+ }
+},
+ {
+        "character":"av",
+        "emote":"tense_cup",
+        "speak": "...",
+        "scene":"street_coffee",
+        "guest":{
+          "order":1,
+          "character":"nv",
+          "emote":"coffee_confused2"
+ }
+   },
+   {
+        "character":"av",
+        "emote":"tense_speak_cup",
+        "speak": "I think I can... Kinda... See ghosts?",
+        "scene":"street_coffee",
+        "guest":{
+          "order":1,
+          "character":"nv",
+          "emote":"coffee_confused2"
+ }
+  },
+   {
+        "character":"nv",
+        "emote":"coffee_smirk",
+        "speak": "...",
+        "scene":"street_coffee",
+        "guest":{
+          "order":0,
+          "character":"av",
+          "emote":"tense_cup"
+ }
+  },
+   {
+        "character":"nv",
+        "emote":"coffee_laugh",
+        "speak": "HAHA! Yeah right, good one Ave!",
+        "scene":"street_coffee",
+        "guest":{
+          "order":0,
+          "character":"av",
+          "emote":"tense_cup"
+ }
+   },
+   {
+        "character":"av",
+        "emote":"tense_cup",
+        "speak": "...",
+        "scene":"street_coffee",
+        "guest":{
+          "order":1,
+          "character":"nv",
+          "emote":"coffee"
+ }
+   },
+   {
+        "character":"nv",
+        "emote":"coffee_confused2",
+        "speak": "...",
+        "scene":"street_coffee",
+        "guest":{
+          "order":0,
+          "character":"av",
+          "emote":"sad_cup"
+ }
+  },
+   {
+        "character":"nv",
+        "emote":"coffee_confused",
+        "speak": "Wait, you're being serious?",
+        "scene":"street_coffee",
+        "guest":{
+          "order":0,
+          "character":"av",
+          "emote":"sad_cup"
+ }
+}
 ]
