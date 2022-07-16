@@ -1,11 +1,11 @@
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, ipcMain} = require('electron');
 const fs = require('fs');
 const path = require('path');
 
-var identity;
+let identity;
+let mainWindow;
 
 function createWindow () {
-  var mainWindow;
 
   fs.readFile(path.join(__dirname, 'identity.json'), (err, data) => {
     if (err) throw err;
@@ -28,6 +28,8 @@ function createWindow () {
     mainWindow.loadFile('index.html');
 
     mainWindow.setMenu(null);
+
+    mainWindow.webContents.openDevTools();
 
     // Open the DevTools.
     if (identity.developer_tools_init) mainWindow.webContents.openDevTools();
@@ -59,3 +61,25 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+ipcMain.on('window', (event, arg) => {
+  if (!mainWindow) return;
+  switch (arg) {
+    case "pin":
+      if (mainWindow.isAlwaysOnTop()) mainWindow.setAlwaysOnTop(false);
+      else mainWindow.setAlwaysOnTop(true);
+      event.reply('pin', mainWindow.isAlwaysOnTop());
+      break;
+    case "close":
+      mainWindow.close();
+      break;
+    case "maximize":
+      if (mainWindow.isMaximized()) mainWindow.unmaximize();
+      else mainWindow.maximize();
+      break;
+    case "minimize":
+      mainWindow.minimize();
+      break;
+    default: break;
+  }
+});

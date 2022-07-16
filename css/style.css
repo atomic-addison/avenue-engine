@@ -118,6 +118,26 @@ p {
     .game_contents .choice_area.inactive {
       pointer-events: none;
       display: none; }
+    .game_contents .choice_area .choice_input_container {
+      display: flex;
+      width: 100%;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      align-items: center; }
+      .game_contents .choice_area .choice_input_container input {
+        flex-grow: 1;
+        flex-shrink: 0;
+        border: 2px solid black;
+        background-color: #fff;
+        font-size: 20px;
+        padding: 15px 20px;
+        outline: none; }
+      .game_contents .choice_area .choice_input_container button {
+        margin-left: 5px;
+        flex-shrink: 0;
+        width: unset;
+        margin-top: 0;
+        margin-bottom: 0; }
   .game_contents .speech_box {
     position: absolute;
     bottom: 30px;

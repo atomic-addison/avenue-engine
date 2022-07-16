@@ -1,4 +1,5 @@
 var html2canvas = require('html2canvas');
+const { ipcRenderer } = require('electron');
 var open = require("open");
 
 var keyEditMode = false;
@@ -309,13 +310,28 @@ class character{
 		function getChoices(){
 			if (args.choices) {
 				for (var i = 0; i < args.choices.length; i++) {
-					$(".choice_area").append(`<button class="choice_${i}">${args.choices[i].option}</button>`);
+					if (args.choices[i].sysvarInput) {
+						$(".choice_area").append(`
+							<div class="choice_input_container">
+								<input type="text" class="input_${i}">
+								<button class="choice_${i}">Ok</button>
+							</div>
+						`);
+					}
+					else {
+						$(".choice_area").append(`<button class="choice_${i}">${args.choices[i].option}</button>`);
+					}
 
 					(function (num) {
 						$(`.choice_${i}`).click(() => {
 							if (args.choices[num].sysvar) {
 								for (var j = 0; j < args.choices[num].sysvar.length; j++) {
-									window.game.sysvars[args.choices[num].sysvar[j].name] = args.choices[num].sysvar[j].value; 
+									if (args.choices[num].sysvarInput) {
+										window.game.sysvars[args.choices[num].sysvar[j].name] = $(`.input_${num}`).first().val();
+									}
+									else {
+										window.game.sysvars[args.choices[num].sysvar[j].name] = args.choices[num].sysvar[j].value;
+									}
 								}
 							}
 
@@ -358,7 +374,15 @@ class character{
 		}
 		else{
 			$(".speech_box").show();
-			this.typeOut(args.speak, args.unskippable, getChoices, args.typeTime);
+
+			let regex = /[^{\}]+(?=})/g;
+			let speech = args.speak;
+
+			(speech.match(regex) || []).map(function(str) {
+				speech = speech.replace(`{${str}}`, window.game.sysvars[str]);
+			});
+
+			this.typeOut(speech, args.unskippable, getChoices, args.typeTime);
 		}
 	}
 }
@@ -581,7 +605,7 @@ $(document).on("langload", function(){
 							{ "text" : window.lang_dict.nope, "value" : false }
 						],
 						default: false,
-						callback: (e) => { if (e) remote.getCurrentWindow().close(); }
+						callback: (e) => { if (e) ipcRenderer.send('window', "close"); }
 					});
 				}
 				else {
@@ -603,7 +627,7 @@ $(document).on("langload", function(){
 				{ "text" : window.lang_dict.nope, "value" : false }
 			],
 			default: false,
-			callback: (e) => { if (e) remote.getCurrentWindow().close(); }
+			callback: (e) => { if (e) ipcRenderer.send('window', "close"); }
 		});
 	});
 
@@ -668,3 +692,36 @@ $(document).on("langload", function(){
 //objectfit still doesnt work in html2canvas as of 2/9/2020 (FIXED TEMPORARILY WITH ALIGN SELF)
 //using a namespace for an event like keycode.skip makes a function bound only to .skip fire for any element in the namespace
 //oktonext checks if the dialogue was recently skipped and if so disallows it to instantly go to the next slide (should work ok but keep an eye on it)
+
+
+//TEMP DOCS
+
+//this is how you setup custom input for sysvars and use them to template strings in speech
+
+/*
+
+   {
+      "character":"sh",
+      "speak":"...",
+      "emote":"blank",
+      "scene":"blank_white",
+      "choices":[
+         {
+            "sysvarInput" : true,
+            "sysvar":[
+               {
+                  "name":"charname"
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "character":"sh",
+      "speak":"How are you doing {charname}",
+      "speakTemplated" : true,
+      "emote":"puzzled",
+      "scene":"blank_white"
+   },
+
+*/
