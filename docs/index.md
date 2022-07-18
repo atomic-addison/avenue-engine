@@ -45,7 +45,31 @@ Each scene is a JSON object with properties that dictate how it displays on the 
 
 `choices` : this prop should contain an array of choices.
 
+`affected` : when set to true, indicates that the scene should reference a system variable before displaying.
+
+`sysvarCheck` : this prop contains the name of the system variable to reference.
+
+`sysvarResults` : this prop contains an object with properties that represent the value of the referenced system variable. Each property contains the normal scene properties. If one of the properties of `sysvarResults` matches, the properties within it will be the ones used for the scene.
+
 ## Choices
+
+Each choice is a JSON object with properties that dictate how it displays on the screen. Additionally, choices are used to stitch together different scripts (branches) and to set system variables.
+
+`option` : this property represents the text that displays on a button, if the choice is a button.
+
+`sysvarInput` : if set to true, this property makes the choice use a text input for a system variable value.
+
+`next` : this property represents the name of the script that will be loaded after the choice is selected.
+
+`sysvar` : this property is an array of system variables.
+
+## System variables
+
+Each system variable is an object with properties that represents a variable that you can use for the purposes of tracking the choices the player has made throughout the game.
+
+`name` : the name of the system variable that can later be used to reference the variable in a script.
+
+`value` : the value that will be assigned to a system variable, should the choice its attached to be selected. Does not need to be set if the choice has `sysvarInput` set to true.
 
 ### TODO:
 - finish docs lol
