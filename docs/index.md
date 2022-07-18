@@ -1,3 +1,4 @@
+
 # Engine documentation
 ## Preface
 
@@ -18,17 +19,33 @@ Here is what your directory structure should look like:
 
 ```
 /game_data
-     /en
-          /chapters
-               /chapter_1
-                    primary_script.json
-     /data
-          characters.json
-          dict.json
+   /en
+      /chapters
+         /chapter_1
+            primary_script.json
+   /data
+      characters.json
+      dict.json
 ```
 The entry file a.k.a. the starting branch should always be named `primary_script.json`. You can create as many additional script files (branches) in your `chapters` directory as you would like. 
 
-## The scenes
+## Scenes
+
+Each scene is a JSON object with properties that dictate how it displays on the screen.
+
+`character` : this prop contains the pseudonym that you assigned to a character in your `characters.json` file. This allows the engine to use data assigned to said character, such as it's name and the directory which contains the sprites.
+
+`speak` : this prop contains text that will appear in the textbox at the bottom of the screen. Additionally, you can include system variables in text by wrapping them in curly braces.
+
+`speakTemplated` : if set to true, this prop will allow the engine to replace references to system variables with their values in the text you wrote for the `speak` property.
+
+`emote` :  this prop references the character sprite which will be displayed on the screen.
+
+`scene` : this prop references the background image which will be displayed on the screen.
+
+`choices` : this prop should contain an array of choices.
+
+## Choices
 
 ### TODO:
 - finish docs lol
