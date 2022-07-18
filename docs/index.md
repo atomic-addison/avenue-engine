@@ -18,13 +18,13 @@ Here is what your directory structure should look like:
 
 ```
 /game_data
-	/en
-		/chapters
-			/chapter_1
-				primary_script.json
-		/data
-			characters.json
-			dict.json
+     /en
+          /chapters
+               /chapter_1
+                    primary_script.json
+     /data
+          characters.json
+          dict.json
 ```
 The entry file a.k.a. the starting branch should always be named `primary_script.json`. You can create as many additional script files (branches) in your `chapters` directory as you would like. 
 
